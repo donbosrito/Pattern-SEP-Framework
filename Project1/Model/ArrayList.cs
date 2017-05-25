@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,14 +13,24 @@ namespace Project1.Model
     {
         private List<T> data;
 
+        public ArrayList()
+        {
+            this.data = new List<T>();
+        }
+
+        public ArrayList(List<T> data)
+        {
+            this.data = data;
+        }
+
         public override void add(T t)
         {
             data.Add(t);
         }
 
-        public override void delete(T t)
+        public override void delete(int index)
         {
-            data.Remove(t);
+            data.RemoveAt(index);
         }
 
         public override void udpate(int position, T t)
@@ -26,11 +38,21 @@ namespace Project1.Model
             data[position] = t;
         }
 
-        public override void display()
+        public override DataTable display()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            DataTable dataTable = new DataTable();
+            PropertyInfo[] lstPF = data[0].getProperties();
+            foreach (PropertyInfo pf in lstPF)
+            {
+                dataTable.Columns.Add(pf.Name);
+            }
+
+            foreach (T item in data)
+            {
+                item.attachToTable(ref dataTable);
+            }
+
+            return dataTable;
         }
     }
 }

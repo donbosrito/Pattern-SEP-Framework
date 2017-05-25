@@ -1,0 +1,8 @@
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\bin\Debug\SEP-Framework.exe.config
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\bin\Debug\SEP-Framework.exe
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\bin\Debug\SEP-Framework.pdb
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\obj\Debug\Project1.MainForm.resources
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\obj\Debug\SEPFramework.Properties.Resources.resources
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\obj\Debug\SEP-Framework.csproj.GenerateResource.Cache
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\obj\Debug\SEP-Framework.exe
+\\Mac\Home\Documents\Visual Studio 2013\Projects\Pattern-SEP-Framework\Project1\obj\Debug\SEP-Framework.pdb

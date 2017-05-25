@@ -8,8 +8,8 @@ namespace Project1.Model
 {
     public class Example : BaseModel
     {
-        private String name { get; set; }
-        private int age { get; set; }
+        public String name { get; set; }
+        public int age { get; set; }
 
         public Example(String name, int age)
         {

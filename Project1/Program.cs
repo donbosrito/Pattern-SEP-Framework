@@ -15,12 +15,15 @@ namespace Project1
         [STAThread]
         static void Main()
         {
-            BaseModelListImp < Example > lstExample = new ArrayList<Example>();
+            BaseModelListImp<Example> lstExample = new ArrayList<Example>();
             lstExample.add(new Example("A", 26));
             lstExample.add(new Example("B", 1));
             lstExample.add(new Example("C", 100));
             lstExample.add(new Example("D", 500));
-            lstExample.display();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm<Example>(lstExample));
         }
     }
 }
