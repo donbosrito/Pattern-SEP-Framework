@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Project
+namespace Project1.Service
 {
     public abstract class DBAdapter
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Project
+namespace Project1.Service
 {
     public class SqlAdapter: DBAdapter
     {
