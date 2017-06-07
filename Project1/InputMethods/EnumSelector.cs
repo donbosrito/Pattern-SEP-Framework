@@ -20,7 +20,7 @@ namespace SEPFramework.InputMethods
                 return false;
             }
 
-            this._comboBox.Text = data.ToString();
+            this._comboBox.SelectedText = data.ToString();
 
             return true;
         }
