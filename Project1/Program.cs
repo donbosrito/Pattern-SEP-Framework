@@ -1,11 +1,11 @@
-﻿using Project1.Model;
+﻿using SEPFramework.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SEPFramework
 {
     static class Program
     {

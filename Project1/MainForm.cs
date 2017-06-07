@@ -1,4 +1,4 @@
-﻿using Project1.Model;
+﻿using SEPFramework.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Project1
+namespace SEPFramework
 {
     public partial class MainForm<T> : Form where T : BaseModel 
     {

@@ -5,10 +5,12 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Project1.InputMethods
+namespace SEPFramework.InputMethods
 {
     public abstract class InputMethod
     {
+        protected const int DISTANCE = 10;
+
         protected System.Windows.Forms.Label _label = new Label();
         protected object _sample = null;
 
@@ -16,6 +18,7 @@ namespace Project1.InputMethods
         protected abstract void _setOtherItemPosition(Point p);
 
         public abstract Point getBottomPosition();
+        public abstract InputMethod clone();
         public abstract bool applyData(object data);
         public abstract dynamic getData();
         public abstract InputMethod create(object sample);

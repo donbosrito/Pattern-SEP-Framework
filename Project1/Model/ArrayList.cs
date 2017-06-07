@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Project1.Model
+namespace SEPFramework.Model
 {
     public class ArrayList<T> : BaseModelListImp<T> where T : BaseModel
     {

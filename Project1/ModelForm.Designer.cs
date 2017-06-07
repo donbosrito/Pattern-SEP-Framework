@@ -1,4 +1,4 @@
-﻿using Project1.Model;
+﻿using SEPFramework.Model;
 namespace SEPFramework
 {
     public partial class ModelForm<T> where T : BaseModel

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project1.Model
+namespace  SEPFramework.Model
 {
     public class Example : BaseModel
     {
