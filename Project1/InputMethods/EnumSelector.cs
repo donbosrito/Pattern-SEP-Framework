@@ -15,7 +15,7 @@ namespace SEPFramework.InputMethods
 
         public override bool applyData(object data)
         {
-            if (data.GetType() != this._sample.GetType())
+            if (data.GetType() != this._sampleType)
             {
                 return false;
             }
@@ -25,26 +25,16 @@ namespace SEPFramework.InputMethods
             return true;
         }
 
-        public override InputMethod clone()
+        public override InputMethod create(Type type)
         {
-            EnumSelector temp = new EnumSelector();
-            temp._comboBox = this._comboBox;
-            temp._label = this._label;
-            temp._sample = this._sample;
+            if (!type.IsEnum) return null;
 
-            return temp;
-        }
-
-        public override InputMethod create(object sample)
-        {
-            if (!sample.GetType().IsEnum) return null;
-
-            if (this._sample.GetType() != sample.GetType())
+            if (this._sampleType != type)
             {
-                this._sample = sample;
+                this._sampleType = type;
                 this._comboBox.Items.Clear();
 
-                var values = Enum.GetValues(sample.GetType());
+                var values = Enum.GetValues(type);
 
                 this._comboBox.DisplayMember = "T";
                 this._comboBox.ValueMember = "V";
@@ -64,7 +54,7 @@ namespace SEPFramework.InputMethods
 
         public override dynamic getData()
         {
-            return Convert.ChangeType(this._comboBox.SelectedValue, this._sample.GetType());
+            return Convert.ChangeType(this._comboBox.SelectedValue, this._sampleType);
         }
 
         protected override void _attachOtherItemToForm(Form form)
@@ -74,8 +64,8 @@ namespace SEPFramework.InputMethods
 
         protected override void _setOtherItemPosition(Point p)
         {
-            Point newLocation = this._label.Location;
-            newLocation.Y = newLocation.Y + this._label.Height + DISTANCE;
+            p.Y += DISTANCE;
+            this._comboBox.Location = p;
         }
     }
 }

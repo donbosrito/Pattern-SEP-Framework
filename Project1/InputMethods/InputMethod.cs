@@ -12,16 +12,20 @@ namespace SEPFramework.InputMethods
         protected const int DISTANCE = 10;
 
         protected System.Windows.Forms.Label _label = new Label();
-        protected object _sample = null;
+        protected Type _sampleType = null;
 
         protected abstract void _attachOtherItemToForm(Form form);
         protected abstract void _setOtherItemPosition(Point p);
 
         public abstract Point getBottomPosition();
-        public abstract InputMethod clone();
         public abstract bool applyData(object data);
         public abstract dynamic getData();
-        public abstract InputMethod create(object sample);
+        public abstract InputMethod create(Type type);
+
+        public InputMethod clone()
+        {
+            return (InputMethod)this.MemberwiseClone();
+        }
 
         public void attachToForm(Form form)
         {
@@ -39,6 +43,7 @@ namespace SEPFramework.InputMethods
         {
             this._label.Location = p;
             Point bottom = new Point(p.X, p.Y + this._label.Height);
+            this._setOtherItemPosition(bottom);
         }
     }
 }
