@@ -1,4 +1,4 @@
-﻿using SEPFramework.Utils;
+﻿using SEPFramework.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +9,17 @@ namespace SEPFramework.Model
 {
     public class Example : BaseModel
     {
-        [ModelAttribute(DisplayName: "Name", Require:true)]
+        [ModelAttribute(DisplayName = "Name", Require = true)]
         public String Name { get; set; }
 
-        [ModelAttribute(DisplayName: "Age", Require:false)]
+        [ModelAttribute(DisplayName = "Age")]
         public int Age { get; set; }
 
-        public Example(String Name, int Age)
+        public Example() { }
+
+        public Example(int ID, String Name, int Age)
         {
+            base.ID = ID;
             this.Name = Name;
             this.Age = Age;
         }

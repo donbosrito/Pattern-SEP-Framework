@@ -14,7 +14,16 @@ namespace SEPFramework
 {
     public partial class ModelForm<T> : Form where T : BaseModel, new()
     {
+        //Add Form
         public ModelForm()
+        {
+            InitializeComponent();
+            generate();
+            setPosition();
+        }
+
+        //Edit Form
+        public ModelForm(int ID)
         {
             InitializeComponent();
             generate();
@@ -33,6 +42,11 @@ namespace SEPFramework
         {
             Point p = this.panel_Main.Location;
             this.controls.setPosition(p);
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

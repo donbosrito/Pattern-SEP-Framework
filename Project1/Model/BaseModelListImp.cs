@@ -11,7 +11,7 @@ namespace SEPFramework.Model
     {
         public abstract void Add(T t);
         public abstract void Udpate(int position, T t);
-        public abstract void Delete(int index);
+        public abstract void Delete(int ID);
         public abstract DataTable Display();
     }
 }

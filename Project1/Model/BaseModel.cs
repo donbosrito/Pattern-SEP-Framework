@@ -1,6 +1,6 @@
 ﻿using SEPFramework;
 using SEPFramework.Service;
-using SEPFramework.Utils;
+using SEPFramework.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,12 +8,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using SEPFramework.Service;
 
 namespace SEPFramework.Model
 {
     public class BaseModel
     {
+        [ModelAttribute(DisplayName = "ID", Identify = true)]
+        public int ID { get; set; }
+
         public int GetPropertiesCount()
         {
             return this.GetType().GetProperties().Count();

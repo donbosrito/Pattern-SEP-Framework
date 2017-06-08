@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SEPFramework
 {
-    public partial class MainForm<T> : Form where T : BaseModel 
+    public partial class MainForm<T> : Form where T : BaseModel, new()
     {
         BaseModelListImp<T> data;
         public MainForm()
@@ -32,6 +32,21 @@ namespace SEPFramework
             {
                 data.Delete(gridTable.SelectedRows[0].Index);
                 gridTable.DataSource = data.Display();
+            }
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelForm<T> modelForm = new ModelForm<T>();
+            modelForm.Show();
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridTable.SelectedRows != null)
+            {
+                ModelForm<T> modelForm = new ModelForm<T>(gridTable.SelectedRows[0].Index);
+                modelForm.Show();
             }
         }
     }

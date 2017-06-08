@@ -1,4 +1,4 @@
-﻿using SEPFramework.Utils;
+﻿using SEPFramework.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,9 +29,9 @@ namespace SEPFramework.Model
             data.Add(t);
         }
 
-        public override void Delete(int index)
+        public override void Delete(int ID)
         {
-            data.RemoveAt(index);
+            data.RemoveAt(ID);
         }
 
         public override void Udpate(int position, T t)
@@ -43,6 +43,7 @@ namespace SEPFramework.Model
         {
             DataTable dataTable = new DataTable();
             PropertyInfo[] lstPF = data[0].GetProperties();
+
             foreach (PropertyInfo pf in lstPF)
             {
                 var attrs = pf.GetCustomAttributes();
