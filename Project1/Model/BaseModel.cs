@@ -1,4 +1,6 @@
-﻿using Project;
+﻿using SEPFramework;
+using SEPFramework.Service;
+using SEPFramework.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project1.Model
+namespace SEPFramework.Model
 {
     public class BaseModel
     {

@@ -1,5 +1,5 @@
-﻿using Project1.Model;
-namespace Project1
+﻿using SEPFramework.Model;
+namespace SEPFramework
 {
     public partial class MainForm<T> where T : BaseModel 
     {
@@ -42,9 +42,12 @@ namespace Project1
             // 
             // gridTable
             // 
-            this.gridTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridTable.AllowUserToAddRows = false;
+            this.gridTable.AllowUserToDeleteRows = false;
+            this.gridTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gridTable.Location = new System.Drawing.Point(12, 35);
             this.gridTable.Name = "gridTable";
+            this.gridTable.ReadOnly = true;
             this.gridTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridTable.Size = new System.Drawing.Size(651, 359);
             this.gridTable.TabIndex = 0;
@@ -85,7 +88,7 @@ namespace Project1
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 

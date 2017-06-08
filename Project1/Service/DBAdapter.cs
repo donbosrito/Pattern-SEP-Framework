@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Project1.Service
+namespace SEPFramework.Service
 {
     public abstract class DBAdapter
     {

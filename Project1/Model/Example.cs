@@ -1,20 +1,24 @@
-﻿using System;
+﻿using SEPFramework.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project1.Model
+namespace SEPFramework.Model
 {
     public class Example : BaseModel
     {
-        public String name { get; set; }
-        public int age { get; set; }
+        [ModelAttribute(DisplayName: "Name", Require:true)]
+        public String Name { get; set; }
 
-        public Example(String name, int age)
+        [ModelAttribute(DisplayName: "Age", Require:false)]
+        public int Age { get; set; }
+
+        public Example(String Name, int Age)
         {
-            this.name = name;
-            this.age = age;
+            this.Name = Name;
+            this.Age = Age;
         }
     }
 }

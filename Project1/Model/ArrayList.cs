@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SEPFramework.Utils;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Project1.Model
+namespace SEPFramework.Model
 {
     public class ArrayList<T> : BaseModelListImp<T> where T : BaseModel
     {
@@ -44,7 +45,19 @@ namespace Project1.Model
             PropertyInfo[] lstPF = data[0].getProperties();
             foreach (PropertyInfo pf in lstPF)
             {
-                dataTable.Columns.Add(pf.Name);
+                var attrs = pf.GetCustomAttributes();
+                foreach (Attribute attr in attrs) // get each attribute using foreach
+                {
+                    if (attr is ModelAttribute)
+                    {
+                        ModelAttribute modelAttribute = (ModelAttribute)attr;
+                        if (modelAttribute.Require)
+                            dataTable.Columns.Add(modelAttribute.DisplayName + "*");
+                        else
+                            dataTable.Columns.Add(modelAttribute.DisplayName);
+                        break;
+                    }
+                }
             }
 
             foreach (T item in data)

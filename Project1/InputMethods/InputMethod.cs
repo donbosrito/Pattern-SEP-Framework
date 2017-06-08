@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Project1.InputMethods
+namespace SEPFramework.InputMethods
 {
     public abstract class InputMethod
     {
