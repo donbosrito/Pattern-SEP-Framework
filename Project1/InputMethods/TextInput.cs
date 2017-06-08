@@ -50,9 +50,9 @@ namespace SEPFramework.InputMethods
             return this._textBox.Text;
         }
 
-        protected override void _attachOtherItemToForm(Form form)
+        protected override void _attachOtherItemToForm(ref Control.ControlCollection control)
         {
-            form.Controls.Add(this._textBox);
+            control.Add(this._textBox);
         }
 
         protected override void _setOtherItemPosition(Point p)

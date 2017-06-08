@@ -48,9 +48,9 @@ namespace SEPFramework.InputMethods
             return this._dateTimePicker.Value;
         }
 
-        protected override void _attachOtherItemToForm(Form form)
+        protected override void _attachOtherItemToForm(ref Control.ControlCollection control)
         {
-            form.Controls.Add(this._dateTimePicker);
+            control.Add(this._dateTimePicker);
         }
 
         protected override void _setOtherItemPosition(Point p)

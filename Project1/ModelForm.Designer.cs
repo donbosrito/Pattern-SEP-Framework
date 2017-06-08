@@ -1,7 +1,8 @@
 ﻿using SEPFramework.Model;
+using SEPFramework.InputMethods;
 namespace SEPFramework
 {
-    public partial class ModelForm<T> where T : BaseModel
+    public partial class ModelForm<T> where T : BaseModel, new()
     {
         /// <summary>
         /// Required designer variable.
@@ -29,21 +30,21 @@ namespace SEPFramework
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_Main = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // panel1
+            // panel_Main
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel_Main.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.AutoScroll = true;
-            this.panel1.Location = new System.Drawing.Point(12, 75);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(301, 397);
-            this.panel1.TabIndex = 0;
+            this.panel_Main.AutoScroll = true;
+            this.panel_Main.Location = new System.Drawing.Point(12, 75);
+            this.panel_Main.Name = "panel_Main";
+            this.panel_Main.Size = new System.Drawing.Size(301, 397);
+            this.panel_Main.TabIndex = 0;
             // 
             // btnCancel
             // 
@@ -81,7 +82,7 @@ namespace SEPFramework
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel_Main);
             this.Name = "ModelForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ModelForm";
@@ -92,9 +93,10 @@ namespace SEPFramework
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel_Main;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label label1;
+        private ListInputMethod controls = new ListInputMethod();
     }
 }

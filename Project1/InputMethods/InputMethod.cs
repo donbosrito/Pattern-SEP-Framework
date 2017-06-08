@@ -14,7 +14,7 @@ namespace SEPFramework.InputMethods
         protected System.Windows.Forms.Label _label = new Label();
         protected Type _sampleType = null;
 
-        protected abstract void _attachOtherItemToForm(Form form);
+        protected abstract void _attachOtherItemToForm(ref Control.ControlCollection control);
         protected abstract void _setOtherItemPosition(Point p);
 
         public abstract Point getBottomPosition();
@@ -27,10 +27,10 @@ namespace SEPFramework.InputMethods
             return (InputMethod)this.MemberwiseClone();
         }
 
-        public void attachToForm(Form form)
+        public void attachToForm(ref Control.ControlCollection control)
         {
-            form.Controls.Add(this._label);
-            this._attachOtherItemToForm(form);
+            control.Add(this._label);
+            this._attachOtherItemToForm(ref control);
         }
 
         public void setLabelName(string name)

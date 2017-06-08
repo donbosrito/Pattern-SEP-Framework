@@ -57,9 +57,9 @@ namespace SEPFramework.InputMethods
             return Convert.ChangeType(this._comboBox.SelectedValue, this._sampleType);
         }
 
-        protected override void _attachOtherItemToForm(Form form)
+        protected override void _attachOtherItemToForm(ref Control.ControlCollection control)
         {
-            form.Controls.Add(this._comboBox);
+            control.Add(this._comboBox);
         }
 
         protected override void _setOtherItemPosition(Point p)
