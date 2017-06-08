@@ -1,7 +1,7 @@
 ﻿using SEPFramework.Model;
 namespace SEPFramework
 {
-    public partial class MainForm<T> where T : BaseModel 
+    public partial class MainForm<T> where T : BaseModel
     {
         /// <summary>
         /// Required designer variable.

@@ -24,25 +24,25 @@ namespace SEPFramework.Model
             this.data = data;
         }
 
-        public override void add(T t)
+        public override void Add(T t)
         {
             data.Add(t);
         }
 
-        public override void delete(int index)
+        public override void Delete(int index)
         {
             data.RemoveAt(index);
         }
 
-        public override void udpate(int position, T t)
+        public override void Udpate(int position, T t)
         {
             data[position] = t;
         }
 
-        public override DataTable display()
+        public override DataTable Display()
         {
             DataTable dataTable = new DataTable();
-            PropertyInfo[] lstPF = data[0].getProperties();
+            PropertyInfo[] lstPF = data[0].GetProperties();
             foreach (PropertyInfo pf in lstPF)
             {
                 var attrs = pf.GetCustomAttributes();
@@ -62,7 +62,7 @@ namespace SEPFramework.Model
 
             foreach (T item in data)
             {
-                item.attachToTable(ref dataTable);
+                item.AttachToTable(ref dataTable);
             }
 
             return dataTable;

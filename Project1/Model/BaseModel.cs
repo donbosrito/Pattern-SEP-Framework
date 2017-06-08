@@ -8,23 +8,24 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SEPFramework.Service;
 
 namespace SEPFramework.Model
 {
     public class BaseModel
     {
-        public int getPropertiesCount()
+        public int GetPropertiesCount()
         {
             return this.GetType().GetProperties().Count();
         }
 
-        public PropertyInfo[] getProperties()
+        public PropertyInfo[] GetProperties()
         {
             var t = this.GetType().GetProperties();
             return t;
         }
 
-        public virtual bool load(DBAdapter db)
+        public virtual bool Load(DBAdapter db)
         {
             List<object> objs = db.read();
 
@@ -41,7 +42,7 @@ namespace SEPFramework.Model
             return true;
         }
 
-        public void attachToTable(ref DataTable table)
+        public void AttachToTable(ref DataTable table)
         {
             if (table == null) return;
 

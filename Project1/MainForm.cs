@@ -23,15 +23,15 @@ namespace SEPFramework
         {
             InitializeComponent();
             this.data = data;
-            gridTable.DataSource = data.display();
+            gridTable.DataSource = data.Display();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gridTable.SelectedRows != null)
             {
-                data.delete(gridTable.SelectedRows[0].Index);
-                gridTable.DataSource = data.display();
+                data.Delete(gridTable.SelectedRows[0].Index);
+                gridTable.DataSource = data.Display();
             }
         }
     }

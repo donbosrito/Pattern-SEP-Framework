@@ -15,15 +15,16 @@ namespace SEPFramework
         [STAThread]
         static void Main()
         {
-            BaseModelListImp<Example> lstExample = new ArrayList<Example>();
-            lstExample.add(new Example("A", 26));
-            lstExample.add(new Example("B", 1));
-            lstExample.add(new Example("C", 100));
-            lstExample.add(new Example("D", 500));
-
+            BaseModelListImp<Example> example = new ArrayList<Example>();
+            example.Add(new Example("A", 10));
+            example.Add(new Example("B", 15));
+            example.Add(new Example("C", 20));
+            example.Add(new Example("D", 25));
+            example.Add(new Example("E", 30));
+            example.Add(new Example("F", 35));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm<Example>(lstExample));
+            Application.Run(new MainForm<Example>(example));
         }
     }
 }
