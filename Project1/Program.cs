@@ -15,7 +15,7 @@ namespace SEPFramework
         [STAThread]
         static void Main()
         {
-            BaseModelListImp<Example> example = new ArrayList<Example>();
+            /*BaseModelListImp<Example> example = new ArrayList<Example>();
             example.Add(new Example(1, "A", 10));
             example.Add(new Example(2, "B", 15));
             example.Add(new Example(3, "C", 20));
@@ -24,7 +24,10 @@ namespace SEPFramework
             example.Add(new Example(6, "F", 35));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm<Example>(example));
+            Application.Run(new MainForm<Example>(example));*/
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new ModelForm<Example>()); 
         }
     }
 }

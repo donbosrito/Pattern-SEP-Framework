@@ -39,7 +39,7 @@ namespace SEPFramework
             // panel_Main
             // 
             this.panel_Main.AutoScroll = true;
-            this.panel_Main.Location = new System.Drawing.Point(12, 75);
+            this.panel_Main.Location = new System.Drawing.Point(14, 42);
             this.panel_Main.Name = "panel_Main";
             this.panel_Main.Size = new System.Drawing.Size(411, 418);
             this.panel_Main.TabIndex = 0;

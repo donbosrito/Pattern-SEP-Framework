@@ -42,6 +42,7 @@ namespace SEPFramework.InputMethods
             {
                 i.setPosition(beginPoint);
                 beginPoint = i.getBottomPosition();
+                beginPoint.Y += 20;
             }
         }
 
@@ -62,6 +63,18 @@ namespace SEPFramework.InputMethods
             if (index > this._inputMethods.Count || index < 0 || name == null) return false;
 
             this._inputMethods[index].setLabelName(name);
+            return true;
+        }
+
+        public bool setWidth(int width)
+        {
+            if (width <= 0) return false;
+
+            foreach (var i in this._inputMethods)
+            {
+                i.setWidth(width);
+            }
+
             return true;
         }
     }

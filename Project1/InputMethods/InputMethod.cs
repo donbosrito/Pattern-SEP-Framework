@@ -9,7 +9,7 @@ namespace SEPFramework.InputMethods
 {
     public abstract class InputMethod
     {
-        protected const int DISTANCE = 10;
+        protected const int DISTANCE = 0;
 
         protected System.Windows.Forms.Label _label = new Label();
         protected Type _sampleType = null;
@@ -21,6 +21,7 @@ namespace SEPFramework.InputMethods
         public abstract bool applyData(object data);
         public abstract dynamic getData();
         public abstract InputMethod create(Type type);
+        public abstract void setWidth(int width);
 
         public InputMethod clone()
         {

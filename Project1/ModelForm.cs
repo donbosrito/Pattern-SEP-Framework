@@ -35,7 +35,10 @@ namespace SEPFramework
             T sample = new T();
             this.controls = InputMethodFactory<T>.getInstance().create(sample);
             var c = this.panel_Main.Controls;
+            var names = sample.getNames();
+            this.controls.setLabelName(names);
             this.controls.attachToForm(ref c);
+            this.controls.setWidth(this.panel_Main.Width);
         }
 
         private void setPosition()

@@ -13,9 +13,9 @@ namespace SEPFramework.Model
 {
     public class BaseModel
     {
-        [ModelAttribute(DisplayName = "ID", Identify = true)]
-        public int ID { get; set; }
-
+        //[ModelAttribute(DisplayName = "ID", Identify = true)]
+        //public int ID { get; set; }
+        
         public int GetPropertiesCount()
         {
             return this.GetType().GetProperties().Count();
@@ -58,6 +58,27 @@ namespace SEPFramework.Model
             }
 
             table.Rows.Add(objs.ToArray());
+        }
+
+        public List<string> getNames()
+        {
+            List<string> names = new List<string>();
+
+            var props = this.GetProperties();
+            foreach (var p in props)
+            {
+                object[] attrs = p.GetCustomAttributes(true);
+                foreach (var attr in attrs)
+                {
+                    ModelAttribute modelAttr = attr as ModelAttribute;
+                    if (modelAttr != null)
+                    {
+                        names.Add(modelAttr.DisplayName);
+                    }
+                }
+            }
+
+            return names;
         }
     }
 }

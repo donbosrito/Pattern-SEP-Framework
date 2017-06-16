@@ -63,10 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InputMethods\DateTimeSelector.cs" />
-    <Compile Include="InputMethods\EnumSelector.cs" />
+    <Compile Include="InputMethods\EnumComboBoxSelector.cs" />
+    <Compile Include="InputMethods\EnumRadioButtonSelector.cs" />
     <Compile Include="InputMethods\InputMethod.cs" />
     <Compile Include="InputMethods\InputMethodFactory.cs" />
     <Compile Include="InputMethods\ListInputMethod.cs" />
+    <Compile Include="InputMethods\NumberInput.cs" />
     <Compile Include="InputMethods\TextInput.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

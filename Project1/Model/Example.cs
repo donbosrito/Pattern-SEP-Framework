@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace SEPFramework.Model
 {
+    public enum Gender
+    {
+        Male, Female
+    }
+
     public class Example : BaseModel
     {
         [ModelAttribute(DisplayName = "Name", Require = true)]
@@ -15,13 +20,16 @@ namespace SEPFramework.Model
         [ModelAttribute(DisplayName = "Age")]
         public int Age { get; set; }
 
+        [ModelAttribute(DisplayName = "Gender")]
+        public Gender gender { get; set; }
+
         public Example() { }
 
-        public Example(int ID, String Name, int Age)
+        public Example(String Name, int Age, Gender g)
         {
-            base.ID = ID;
             this.Name = Name;
             this.Age = Age;
+            this.gender = g;
         }
     }
 }

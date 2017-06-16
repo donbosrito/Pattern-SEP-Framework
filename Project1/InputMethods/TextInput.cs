@@ -50,6 +50,14 @@ namespace SEPFramework.InputMethods
             return this._textBox.Text;
         }
 
+        public override void setWidth(int width)
+        {
+            if (width <= 0) return;
+
+            this._textBox.Width = width;
+            this._textBox.Update();
+        }
+
         protected override void _attachOtherItemToForm(ref Control.ControlCollection control)
         {
             control.Add(this._textBox);

@@ -24,9 +24,11 @@ namespace SEPFramework.InputMethods
 
         private InputMethodFactory()
         {
-            this._inputMethods.AddFirst(new EnumSelector());
+            this._inputMethods.AddFirst(new EnumRadioButtonSelector());
+            this._inputMethods.AddFirst(new EnumComboBoxSelector());
             this._inputMethods.AddLast(new DateTimeSelector());
             this._inputMethods.AddLast(new TextInput());
+            this._inputMethods.AddLast(new NumberInput());
         }
 
         public bool addInputMethod(InputMethod method)
