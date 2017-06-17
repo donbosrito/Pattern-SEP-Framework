@@ -9,6 +9,7 @@ namespace SEPFramework.Model
 {
     public abstract class BaseModelListImp<T> where T : BaseModel
     {
+        public abstract T GetModel(int ID);
         public abstract void Add(T t);
         public abstract void Udpate(int position, T t);
         public abstract void Delete(int ID);

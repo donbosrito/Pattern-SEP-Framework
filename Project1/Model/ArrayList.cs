@@ -24,6 +24,13 @@ namespace SEPFramework.Model
             this.data = data;
         }
 
+        public override T GetModel(int ID)
+        {
+            if (ID < 0 || ID >= this.data.Count) return null;
+
+            return this.data[ID];
+        }
+
         public override void Add(T t)
         {
             data.Add(t);

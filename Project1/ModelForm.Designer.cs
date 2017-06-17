@@ -32,7 +32,7 @@ namespace SEPFramework
         {
             this.panel_Main = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -54,14 +54,15 @@ namespace SEPFramework
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // btnAdd
+            // btnSave
             // 
-            this.btnAdd.Location = new System.Drawing.Point(160, 499);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(131, 33);
-            this.btnAdd.TabIndex = 2;
-            this.btnAdd.Text = "Save";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnSave.Location = new System.Drawing.Point(160, 499);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(131, 33);
+            this.btnSave.TabIndex = 2;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // label1
             // 
@@ -79,7 +80,7 @@ namespace SEPFramework
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(435, 544);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.panel_Main);
             this.Name = "ModelForm";
@@ -94,7 +95,7 @@ namespace SEPFramework
 
         private System.Windows.Forms.Panel panel_Main;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label1;
         private ListInputMethod controls = new ListInputMethod();
     }

@@ -77,5 +77,29 @@ namespace SEPFramework.InputMethods
 
             return true;
         }
+
+        public bool applyData(List<object> data)
+        {
+            if (data.Count != this._inputMethods.Count) return false;
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (!this._inputMethods[i].applyData(data[i])) return false;
+            }
+
+            return true;
+        }
+
+        public List<object> getData()
+        {
+            var values = new List<object>();
+
+            foreach (var i in this._inputMethods)
+            {
+                values.Add(i.getData());
+            }
+
+            return values;
+        }
     }
 }

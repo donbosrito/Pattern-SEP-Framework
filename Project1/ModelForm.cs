@@ -14,12 +14,14 @@ namespace SEPFramework
 {
     public partial class ModelForm<T> : Form where T : BaseModel, new()
     {
+        private MainForm<T> _mainForm = null;
+
         //Add Form
         public ModelForm()
         {
             InitializeComponent();
-            generate();
-            setPosition();
+            this.generate();
+            this.setPosition();
         }
 
         //Edit Form
@@ -28,6 +30,19 @@ namespace SEPFramework
             InitializeComponent();
             generate();
             setPosition();
+        }
+
+        public ModelForm(MainForm<T> main_form)
+        {
+            InitializeComponent();
+            generate();
+            setPosition();
+            this._mainForm = main_form;
+        }
+
+        public void setMainForm(MainForm<T> main_form)
+        {
+            this._mainForm = main_form;
         }
 
         private void generate()
@@ -50,6 +65,25 @@ namespace SEPFramework
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        public void applyData(T data)
+        {
+            this.controls.applyData(data.GetPropertiesValues());
+        }
+
+        public T getData()
+        {
+            var data = new T();
+            data.ApplyPropeties(this.controls.getData());
+            return data;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (this._mainForm == null) return;
+
+            this._mainForm.save(this.getData());
         }
     }
 }

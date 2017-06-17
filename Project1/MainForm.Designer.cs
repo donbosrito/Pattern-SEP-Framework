@@ -128,6 +128,7 @@ namespace SEPFramework
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private ModelForm<T> modelForm;
     }
 }
 

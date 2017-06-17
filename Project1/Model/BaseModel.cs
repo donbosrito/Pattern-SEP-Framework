@@ -80,5 +80,33 @@ namespace SEPFramework.Model
 
             return names;
         }
+
+        public bool ApplyPropeties(List<object> props_value)
+        {
+            var props = this.GetProperties();
+
+            if (props.Length != props_value.Count) return false;
+
+            for (int i = 0; i < props.Length; i++)
+            {
+                props[i].SetValue(this, props_value[i]);
+            }
+
+            return true;
+        }
+
+        public List<object> GetPropertiesValues()
+        {
+            List<object> values = new List<object>();
+
+            var props = this.GetProperties();
+
+            foreach (var p in props)
+            {
+                values.Add(p.GetValue(this));
+            }
+
+            return values;
+        }
     }
 }

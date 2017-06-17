@@ -10,11 +10,12 @@ namespace SEPFramework.InputMethods
 {
     public class EnumRadioButtonSelector : InputMethod
     {
-        private GroupBox _groupRadioButton = new GroupBox();
+        private Panel _groupRadioButton = new Panel();
         private RadioButton[] _radioButtons = new RadioButton[2];
 
         public EnumRadioButtonSelector()
         {
+            this._groupRadioButton.BackColor = Color.Honeydew;
             for (int i = 0; i < this._radioButtons.Length; i++)
             {
                 this._radioButtons[i] = new RadioButton();

@@ -64,7 +64,7 @@ namespace SEPFramework.InputMethods
         {
             if (data.GetType() == this._sampleType)
             {
-                this._numberBox.Value = (decimal)data;
+                this._numberBox.Value = decimal.Parse(data.ToString());
                 this._numberBox.Update();
                 return true;
             }
