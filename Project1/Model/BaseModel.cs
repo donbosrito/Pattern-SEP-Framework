@@ -13,9 +13,6 @@ namespace SEPFramework.Model
 {
     public class BaseModel
     {
-        [ModelAttribute(DisplayName = "ID", Identify = true)]
-        public int ID { get; set; }
-
         public int GetPropertiesCount()
         {
             return this.GetType().GetProperties().Count();
@@ -29,7 +26,7 @@ namespace SEPFramework.Model
 
         public virtual bool Load(DBAdapter db)
         {
-            List<object> objs = db.read();
+            List<object> objs = db.Read();
 
             if (objs.Count() == 0) return false;
 
@@ -50,9 +47,8 @@ namespace SEPFramework.Model
 
             List<object> objs = new List<object>();
             PropertyInfo[] props = this.GetType().GetProperties();
-            int count = props.Length;
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < props.Length; i++)
             {
                 objs.Add(props[i].GetValue(this, null));
             }

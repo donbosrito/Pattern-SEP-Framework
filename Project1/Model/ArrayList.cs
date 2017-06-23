@@ -1,4 +1,5 @@
-﻿using SEPFramework.Attributes;
+﻿using SEPFramework.Attribute;
+using SEPFramework.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -42,25 +43,21 @@ namespace SEPFramework.Model
         public override DataTable Display()
         {
             DataTable dataTable = new DataTable();
-            PropertyInfo[] lstPF = data[0].GetProperties();
 
-            foreach (PropertyInfo pf in lstPF)
+            //Add columns
+            foreach (PropertyInfo prop in typeof(T).GetProperties())
             {
-                var attrs = pf.GetCustomAttributes();
-                foreach (Attribute attr in attrs) // get each attribute using foreach
+                var displayName = ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName))).Name;
+                if (displayName != null || displayName != "")
                 {
-                    if (attr is ModelAttribute)
-                    {
-                        ModelAttribute modelAttribute = (ModelAttribute)attr;
-                        if (modelAttribute.Require)
-                            dataTable.Columns.Add(modelAttribute.DisplayName + "*");
-                        else
-                            dataTable.Columns.Add(modelAttribute.DisplayName);
-                        break;
-                    }
+                    dataTable.Columns.Add(displayName);
+                } else
+                {
+                    dataTable.Columns.Add(prop.Name);
                 }
             }
 
+            //Add rows
             foreach (T item in data)
             {
                 item.AttachToTable(ref dataTable);

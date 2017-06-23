@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SEPFramework.Service
 {
     public abstract class DBAdapter
     {
-        public string connectString { get; set; }
-        protected bool _isConnect;
+        public string ConnectString { get; set; }
+        public string DatabaseName { get; set; }
+        protected bool isConnect;
 
-        public abstract bool connect();
-        public abstract void close();
-        public abstract bool readAllFromTable(string table);
-        public abstract List<object> read();
-        public abstract List<String> getColumnNames(string table);
+        public abstract bool Connect();
+        public abstract void Close();
+        public abstract bool ReadAllFromTable(string table);
+        public abstract List<object> Read();
+        public abstract List<String> GetColumnNames(string table);
 
-        public bool isConnect()
+        public bool IsConnect()
         {
-            return this._isConnect;
+            return this.isConnect;
         }
+
     }
 }

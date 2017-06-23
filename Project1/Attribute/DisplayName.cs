@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SEPFramework.Attributes
+namespace SEPFramework.Attribute
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
-    public abstract class ModelAttribute : System.Attribute
+    public class DisplayName : System.Attribute
     {
-        public string ErrorMessage { get; set; }
+        public string Name { get; set; }
 
-        public ModelAttribute()
+        public DisplayName(String name)
         {
-            ErrorMessage = "";
+            Name = name;
         }
     }
 }
