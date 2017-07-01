@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace SEPFramework.InputMethods
 {
-    public class EnumSelector : InputMethod
+    public class EnumComboBoxSelector : InputMethod
     {
         private ComboBox _comboBox = new ComboBox();
 
@@ -29,12 +29,15 @@ namespace SEPFramework.InputMethods
         {
             if (!type.IsEnum) return null;
 
+            var values = Enum.GetValues(type);
+
+            if (values.Length < 3) return null;
+
             if (this._sampleType != type)
             {
                 this._sampleType = type;
                 this._comboBox.Items.Clear();
 
-                var values = Enum.GetValues(type);
 
                 this._comboBox.DisplayMember = "T";
                 this._comboBox.ValueMember = "V";
@@ -42,6 +45,7 @@ namespace SEPFramework.InputMethods
                 {
                     this._comboBox.Items.Add(new { T = v.ToString(), V = v });
                 }
+                this._comboBox.SelectedItem = this._comboBox.Items[0];
             }
 
             return this.clone();
@@ -55,6 +59,14 @@ namespace SEPFramework.InputMethods
         public override dynamic getData()
         {
             return Convert.ChangeType(this._comboBox.SelectedValue, this._sampleType);
+        }
+
+        public override void setWidth(int width)
+        {
+            if (width <= 0) return;
+
+            this._comboBox.Width = width;
+            this._comboBox.Update();
         }
 
         protected override void _attachOtherItemToForm(ref Control.ControlCollection control)

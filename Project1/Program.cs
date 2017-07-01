@@ -19,8 +19,6 @@ namespace SEPFramework
         {
             DatabaseVariable.value = new SqlAdapter();
             DatabaseVariable.value.Connect();
-            DatabaseVariable.value.CreateTableIfNotExists(typeof(Example));
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm<Example>());

@@ -1,10 +1,6 @@
 ﻿using SEPFramework.Service.DataType;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SEPFramework.Service
 {
@@ -23,11 +19,25 @@ namespace SEPFramework.Service
             lstDataType.Add(new SqlBoolean());
         }
 
-        public string generatePropertyQuery(PropertyInfo prop)
+        public string GenerateCreatePropertyQuery(PropertyInfo prop)
         {
             foreach (var dataType in lstDataType)
             {
-                var query = dataType.createInstance(prop);
+                var query = dataType.GenerateCreateQuery(prop);
+
+                if (query != "")
+                {
+                    return query;
+                }
+            }
+            return "";
+        }
+
+        public string GetSqlValueString(PropertyInfo prop, object value)
+        {
+            foreach (var dataType in lstDataType)
+            {
+                var query = dataType.GenerateSQLValue(value);
 
                 if (query != "")
                 {

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace SEPFramework.Attribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class DisplayName : System.Attribute
     {
         public string Name { get; set; }
@@ -14,6 +11,11 @@ namespace SEPFramework.Attribute
         public DisplayName(String name)
         {
             Name = name;
+        }
+
+        public static string getName(PropertyInfo prop)
+        {
+            return ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName))).Name;
         }
     }
 }

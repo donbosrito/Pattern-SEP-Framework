@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -38,20 +34,21 @@ namespace SEPFramework.InputMethods
 
         public void setPosition(Point beginPoint)
         {
-            foreach (var i in this._inputMethods)
+            foreach (var i in _inputMethods)
             {
                 i.setPosition(beginPoint);
                 beginPoint = i.getBottomPosition();
+                beginPoint.Y += 20;
             }
         }
 
         public bool setLabelName(List<string> names)
         {
-            if (names == null || names.Count < this._inputMethods.Count) return false;
+            if (names == null || names.Count < _inputMethods.Count) return false;
 
-            for (int i = 0; i < this._inputMethods.Count; i++)
+            for (int i = 0; i < _inputMethods.Count; i++)
             {
-                this._inputMethods[i].setLabelName(names[i]);
+                _inputMethods[i].setLabelName(names[i]);
             }
 
             return true;
@@ -63,6 +60,42 @@ namespace SEPFramework.InputMethods
 
             this._inputMethods[index].setLabelName(name);
             return true;
+        }
+
+        public bool setWidth(int width)
+        {
+            if (width <= 0) return false;
+
+            foreach (var i in this._inputMethods)
+            {
+                i.setWidth(width);
+            }
+
+            return true;
+        }
+
+        public bool applyData(List<object> data)
+        {
+            if (data.Count != this._inputMethods.Count) return false;
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (!this._inputMethods[i].applyData(data[i])) return false;
+            }
+
+            return true;
+        }
+
+        public List<object> getData()
+        {
+            var values = new List<object>();
+
+            foreach (var i in this._inputMethods)
+            {
+                values.Add(i.getData());
+            }
+
+            return values;
         }
     }
 }

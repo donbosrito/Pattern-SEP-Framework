@@ -1,14 +1,10 @@
 ﻿using SEPFramework.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SEPFramework.Attribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class Uniqued : ModelAttribute
     {
         public bool IsUnique { get; set; }

@@ -14,6 +14,9 @@ namespace SEPFramework.InputMethods
         public DateTimeSelector()
         {
             this._sampleType = typeof(DateTime);
+            this._dateTimePicker.Format = DateTimePickerFormat.Custom;
+            this._dateTimePicker.CustomFormat = "dd / MM / yyyy";
+            
         }
 
         public override bool applyData(object data)
@@ -46,6 +49,14 @@ namespace SEPFramework.InputMethods
         public override dynamic getData()
         {
             return this._dateTimePicker.Value;
+        }
+
+        public override void setWidth(int width)
+        {
+            if (width <= 0) return;
+
+            this._dateTimePicker.Width = width;
+            this._dateTimePicker.Update();
         }
 
         protected override void _attachOtherItemToForm(ref Control.ControlCollection control)

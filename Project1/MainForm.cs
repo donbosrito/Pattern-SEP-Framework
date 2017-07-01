@@ -6,27 +6,28 @@ namespace SEPFramework
 {
     public partial class MainForm<T> : Form where T : BaseModel, new()
     {
-        BaseModelListImp<T> data;
+        private BaseModelList<T> data;
+
         public MainForm()
         {
             InitializeComponent();
-            DatabaseVariable.value.CreateTableIfNotExists(typeof(T));
-            data = DatabaseVariable.value.FetchAllData<T>();
-            gridTable.DataSource = data.Display();
+            data = new BaseModelList<T>();
+            gridTable.DataSource = data.GetAll().Display();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gridTable.SelectedRows != null)
             {
-                data.Delete(gridTable.SelectedRows[0].Index);
-                gridTable.DataSource = data.Display();
+                //data.Delete(gridTable.SelectedRows[0].Index);
+                MessageBox.Show("Successful!", "Deleting", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                gridTable.DataSource = data.GetAll().Display();
             }
         }
 
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ModelForm<T> modelForm = new ModelForm<T>();
+            modelForm = new ModelForm<T>(this);
             modelForm.Show();
         }
 
@@ -34,9 +35,26 @@ namespace SEPFramework
         {
             if (gridTable.SelectedRows != null)
             {
-                ModelForm<T> modelForm = new ModelForm<T>(gridTable.SelectedRows[0].Index);
-                modelForm.Show();
+                //this.current = this.gridTable.SelectedRows[0].Index;
+                //this.modelForm.applyData(this.data.GetModel(this.current));
+                //this.modelForm.ShowDialog();
             }
+        }
+
+        public void createModel(T model)
+        {
+            string message = "";
+            data.Add(model);
+            message = "Adding";
+
+            MessageBox.Show("Successful!", message, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            gridTable.DataSource = data.GetAll().Display();
+            gridTable.Update();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

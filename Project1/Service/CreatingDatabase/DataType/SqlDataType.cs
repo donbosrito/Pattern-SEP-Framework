@@ -6,7 +6,7 @@ namespace SEPFramework.Service.DataType
 {
     class SqlInt : DataType
     {
-        public override string createInstance(PropertyInfo prop)
+        public override string GenerateCreateQuery(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(Int32) || prop.PropertyType == typeof(Int32?))
             {
@@ -34,11 +34,20 @@ namespace SEPFramework.Service.DataType
 
             return "";
         }
+
+        public override string GenerateSQLValue(object value)
+        {
+            if (value != null)
+            {
+                return value.ToString();
+            }
+            else return "NULL";
+        }
     }
 
     class SqlString : DataType
     {
-        public override string createInstance(PropertyInfo prop)
+        public override string GenerateCreateQuery(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(String))
             {                
@@ -62,11 +71,20 @@ namespace SEPFramework.Service.DataType
 
             return "";
         }
+
+        public override string GenerateSQLValue(object value)
+        {
+            if (value != null)
+            {
+                return "N'" + value.ToString() + "'";
+            }
+            else return "NULL";
+        }
     }
 
     class SqlDouble : DataType
     {
-        public override string createInstance(PropertyInfo prop)
+        public override string GenerateCreateQuery(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(Double) || prop.PropertyType == typeof(float) || prop.PropertyType == typeof(Double?) || prop.PropertyType == typeof(float))
             {
@@ -89,11 +107,20 @@ namespace SEPFramework.Service.DataType
 
             return "";
         }
+
+        public override string GenerateSQLValue(object value)
+        {
+            if (value != null)
+            {
+                return value.ToString();
+            }
+            else return "NULL";
+        }
     }
 
     class SqlDecimal : DataType
     {
-        public override string createInstance(PropertyInfo prop)
+        public override string GenerateCreateQuery(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(Decimal) || prop.PropertyType == typeof(Decimal?))
             {
@@ -116,11 +143,20 @@ namespace SEPFramework.Service.DataType
 
             return "";
         }
+
+        public override string GenerateSQLValue(object value)
+        {
+            if (value != null)
+            {
+                return value.ToString();
+            }
+            else return "NULL";
+        }
     }
 
     class SqlDateTime : DataType
     {
-        public override string createInstance(PropertyInfo prop)
+        public override string GenerateCreateQuery(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
             {
@@ -143,11 +179,20 @@ namespace SEPFramework.Service.DataType
 
             return "";
         }
+
+        public override string GenerateSQLValue(object value)
+        {
+            if (value != null)
+            {
+                return "'" + value.ToString() + "'";
+            }
+            else return "NULL";
+        }
     }
 
     class SqlBoolean : DataType
     {
-        public override string createInstance(PropertyInfo prop)
+        public override string GenerateCreateQuery(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(Boolean) || prop.PropertyType == typeof(Boolean?))
             {
@@ -169,6 +214,17 @@ namespace SEPFramework.Service.DataType
             }
 
             return "";
+        }
+
+        public override string GenerateSQLValue(object value)
+        {
+            if (value != null)
+            {
+                if (((bool) value) == true)
+                    return "TRUE";
+                return "FALSE";
+            }
+            else return "NULL";
         }
     }
 }

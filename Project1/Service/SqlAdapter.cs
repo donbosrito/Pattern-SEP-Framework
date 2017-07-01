@@ -78,7 +78,7 @@ namespace SEPFramework.Service
             List<string> lstKey = new List<string>();
             foreach (PropertyInfo prop in typeClass.GetProperties())
             {
-                lstFieldQuery.Add(dataFactory.generatePropertyQuery(prop));
+                lstFieldQuery.Add(dataFactory.GenerateCreatePropertyQuery(prop));
                 if (Key.check(prop))
                 {
                     lstKey.Add(prop.Name);
@@ -106,20 +106,64 @@ namespace SEPFramework.Service
         {
             BaseModelListImp<T> lstModel = new ArrayList<T>();
             String query = "SELECT * FROM " + typeof(T).Name;
-            using (SqlCommand cmd = new SqlCommand(query, this.conn))
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            SqlDataReader reader = new SqlCommand(query, this.conn).ExecuteReader();
+            while (reader.Read())
             {
-                while (reader.Read())
+                T model = new T();
+                foreach (PropertyInfo prop in typeof(T).GetProperties())
                 {
-                    T model = new T();
-                    foreach (PropertyInfo prop in typeof(T).GetProperties())
-                    {
-                        prop.SetValue(model, reader[prop.Name]);
-                    }
-                    lstModel.Add(model);
+                    prop.SetValue(model, reader[prop.Name]);
                 }
+                lstModel.Add(model);
             }
             return lstModel;
+        }
+
+        public T FetchDataById<T>(int Id) where T : BaseModel, new()
+        {
+            T model = new T();
+            String query = "SELECT * FROM " + Table.GetTableName(model.GetType()) + " WHERE ID = " + Id;
+            SqlDataReader reader = new SqlCommand(query, this.conn).ExecuteReader();
+            while (reader.Read())
+            {
+                foreach (PropertyInfo prop in typeof(T).GetProperties())
+                {
+                    prop.SetValue(model, reader[prop.Name]);
+                }
+                return model;
+            }
+            return null;
+        }
+
+        public void AddModel<T>(T model) where T : BaseModel, new()
+        {
+            DataTypeFactory dataFactory = new DataTypeFactory();
+
+            String fields = "", values = "";
+            foreach (PropertyInfo prop in model.GetType().GetProperties())
+            {
+                if (!Uniqued.check(prop))
+                {
+                    fields += prop.Name + ",";
+                    values += dataFactory.GetSqlValueString(prop, prop.GetValue(model)) + ",";
+                }
+            }
+
+
+            removeLastComma(fields);
+            removeLastComma(values);
+            String query = "INSERT INTO " + Table.GetTableName(model.GetType()) + "(" + fields + ") VALUES (" + values + ")";
+            new SqlCommand(query, this.conn).ExecuteNonQuery();
+        }
+
+        public string removeLastComma(string data)
+        {
+            if (data[data.Length - 1] == ',')
+            {
+                data.Remove(data.Length - 1, 1);
+                return data;
+            }
+            return data;
         }
 
         public override void Close()

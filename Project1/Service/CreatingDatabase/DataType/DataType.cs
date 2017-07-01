@@ -9,6 +9,8 @@ namespace SEPFramework.Service.DataType
 {
     abstract class DataType
     {
-        public abstract string createInstance(PropertyInfo prop);
+        public abstract string GenerateCreateQuery(PropertyInfo prop);
+        public abstract string GenerateSQLValue(object value);
+
     }
 }

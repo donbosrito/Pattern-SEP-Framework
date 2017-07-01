@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace SEPFramework.Attribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class Key : ModelAttribute
     {
         public bool IsKey { get; set; }

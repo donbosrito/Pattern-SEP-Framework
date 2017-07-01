@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SEPFramework.Model;
 
 namespace SEPFramework.InputMethods
@@ -12,43 +9,45 @@ namespace SEPFramework.InputMethods
         private static InputMethodFactory<T> _instance = null;
         public static InputMethodFactory<T> getInstance()
         {
-            if (InputMethodFactory<T>._instance == null)
+            if (_instance == null)
             {
-                InputMethodFactory<T>._instance = new InputMethodFactory<T>();
+                _instance = new InputMethodFactory<T>();
             }
 
-            return InputMethodFactory<T>._instance;
+            return _instance;
         }
 
         private LinkedList<InputMethod> _inputMethods = new LinkedList<InputMethod>();
 
         private InputMethodFactory()
         {
-            this._inputMethods.AddFirst(new EnumSelector());
-            this._inputMethods.AddLast(new DateTimeSelector());
-            this._inputMethods.AddLast(new TextInput());
+            _inputMethods.AddFirst(new EnumRadioButtonSelector());
+            _inputMethods.AddFirst(new EnumComboBoxSelector());
+            _inputMethods.AddLast(new DateTimeSelector());
+            _inputMethods.AddLast(new TextInput());
+            _inputMethods.AddLast(new NumberInput());
         }
 
         public bool addInputMethod(InputMethod method)
         {
-            foreach (var i in this._inputMethods)
+            foreach (var i in _inputMethods)
             {
                 if (i.GetType() == method.GetType()) return false;
             }
 
-            this._inputMethods.AddFirst(method);
+            _inputMethods.AddFirst(method);
             return true;
         }
 
-        public ListInputMethod create(T sample)
+        public ListInputMethod create(Type type)
         {
             ListInputMethod list = new ListInputMethod();
-            var infor = sample.GetProperties();
+            var infor = type.GetProperties();
 
             foreach (var i in infor)
             {
                 InputMethod temp = null;
-                foreach (var m in this._inputMethods)
+                foreach (var m in _inputMethods)
                 {
                     temp = m.create(i.PropertyType);
                     if (temp != null) break;
@@ -56,7 +55,9 @@ namespace SEPFramework.InputMethods
 
                 if (temp != null)
                 {
-                    list.add(temp);
+                    var newInputMethod = (InputMethod)Activator.CreateInstance(temp.GetType());
+                    newInputMethod.create(i.PropertyType);
+                    list.add(newInputMethod);
                 }
             }
 

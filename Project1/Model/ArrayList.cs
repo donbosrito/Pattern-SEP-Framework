@@ -1,13 +1,7 @@
 ﻿using SEPFramework.Attribute;
-using SEPFramework.Attributes;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SEPFramework.Model
 {
@@ -23,6 +17,13 @@ namespace SEPFramework.Model
         public ArrayList(List<T> data)
         {
             this.data = data;
+        }
+
+        public override T GetModel(int ID)
+        {
+            if (ID < 0 || ID >= this.data.Count) return null;
+
+            return this.data[ID];
         }
 
         public override void Add(T t)

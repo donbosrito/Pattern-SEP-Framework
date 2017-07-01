@@ -1,13 +1,9 @@
-﻿using SEPFramework;
-using SEPFramework.Service;
-using SEPFramework.Attributes;
-using System;
+﻿using SEPFramework.Service;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using SEPFramework.Attribute;
 
 namespace SEPFramework.Model
 {
@@ -54,6 +50,55 @@ namespace SEPFramework.Model
             }
 
             table.Rows.Add(objs.ToArray());
+        }
+
+        public List<string> GetDisplayInfo()
+        {
+            List<string> names = new List<string>();
+
+            var props = GetType().GetProperties();
+            foreach (var prop in props)
+            {
+                var displayName = ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName))).Name;
+                if (displayName != null || displayName != "")
+                {
+                    names.Add(displayName);
+                }
+                else
+                {
+                    names.Add(prop.Name);
+                }
+            }
+
+            return names;
+        }
+
+        public bool ApplyPropeties(List<object> props_value)
+        {
+            var props = this.GetProperties();
+
+            if (props.Length != props_value.Count) return false;
+
+            for (int i = 0; i < props.Length; i++)
+            {
+                props[i].SetValue(this, props_value[i]);
+            }
+
+            return true;
+        }
+
+        public List<object> GetPropertiesValues()
+        {
+            List<object> values = new List<object>();
+
+            var props = this.GetProperties();
+
+            foreach (var p in props)
+            {
+                values.Add(p.GetValue(this));
+            }
+
+            return values;
         }
     }
 }
