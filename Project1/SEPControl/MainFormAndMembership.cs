@@ -17,6 +17,8 @@ namespace SEPFramework.SEPControl
 
         public MainFormAndMembership(DBAdapter mainFormConnector, DBAdapter membershipConnector)
         {
+            mainFormConnector.Connect();
+            membershipConnector.Connect();
             AccountManager.DBConnector = membershipConnector;
             this._loginForm = new LoginForm<T>();
             this._mainForm = new MainForm<T>(mainFormConnector);

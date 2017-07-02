@@ -36,7 +36,7 @@ namespace SEPFramework
             if (gridTable.SelectedRows != null)
             {
                 var model = data.GetById(gridTable.SelectedRows[0].Index);
-                if (DatabaseVariable.value.Delete<T>(model))
+                if (this.data.Delete(model))
                 {
                     MessageBox.Show("Successful!", "Deleting", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     gridTable.DataSource = data.GetAll().Display();
@@ -76,7 +76,7 @@ namespace SEPFramework
             }
             else
             {
-                DatabaseVariable.value.Update<T>(this.data.GetById(current), model);
+                this.data.Update(this.data.GetById(current), model);
                 gridTable.Update();
                 message = "Updating";
             }

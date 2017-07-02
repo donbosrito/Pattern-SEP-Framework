@@ -7,10 +7,6 @@ using SEPFramework.SEPControl;
 
 namespace SEPFramework
 {
-    public static class DatabaseVariable
-    {
-        public static SqlAdapter value = null;
-    }
     static class Program
     {
         /// <summary>
@@ -19,16 +15,10 @@ namespace SEPFramework
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             DBAdapter mainAdapter = new SqlAdapter("Data Source = PC1\\SQLEXPRESS; Initial Catalog = ExampleDatabase; Integrated Security = False;Trusted_Connection=True");
             DBAdapter accountAdapter = new SqlAdapter("Data Source=PC1\\SQLEXPRESS;Initial Catalog=Account;Integrated Security=False;Trusted_Connection=True");
-            mainAdapter.Connect();
-            accountAdapter.Connect();
             IControl<Example> c = new MainFormAndMembership<Example>(mainAdapter, accountAdapter);
             c.start();
-            //DatabaseVariable.value = new SqlAdapter("Data Source=PC1\\SQLEXPRESS;Initial Catalog=ExampleDatabase;Integrated Security=True");
-            //DatabaseVariable.value.Connect();
         }
     }
 }

@@ -15,12 +15,12 @@ namespace SEPFramework.SEPControl
 
         public MainFromOnly(DBAdapter connector)
         {
+            connector.Connect();
             this._mainForm = new MainForm<T>(connector);
         }
 
         void IControl<T>.start()
         {
-            
             Application.Run(this._mainForm);
         }
     }
