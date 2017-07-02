@@ -20,23 +20,6 @@ namespace SEPFramework.Model
             return t;
         }
 
-        public virtual bool Load(DBAdapter db)
-        {
-            List<object> objs = db.Read();
-
-            if (objs.Count() == 0) return false;
-
-            PropertyInfo[] props = this.GetType().GetProperties();
-            int count = props.Length;
-
-            for (int i = 0; i < count; i++)
-            {
-                props[i].SetValue(this, objs[i], null);
-            }
-
-            return true;
-        }
-
         public void AttachToTable(ref DataTable table)
         {
             if (table == null) return;
@@ -99,6 +82,30 @@ namespace SEPFramework.Model
             }
 
             return values;
+        }
+
+        public bool EqualTo(BaseModel other)
+        {
+            var props = this.GetProperties();
+
+            int count_nonKey = 0;
+            for (int i = 0; i < this.GetPropertiesCount(); i++)
+            {
+                if (Key.check(props[i]))
+                {
+                    if (!props[i].GetValue(this).Equals(props[i].GetValue(other))) return false;
+                }
+                else
+                {
+                    count_nonKey++;
+                }
+            }
+
+            if (count_nonKey == this.GetPropertiesCount())
+            {
+                if (props[0].GetValue(this) != props[0].GetValue(other)) return false;
+            }
+            return true;
         }
     }
 }

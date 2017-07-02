@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using SEPFramework.Attribute;
 using SEPFramework.Model;
+using SEPFramework.Service.CreatingDatabase;
 
 namespace SEPFramework.Service
 {
@@ -16,6 +17,16 @@ namespace SEPFramework.Service
         public SqlAdapter()
         {
             this.ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var connectionStringBuilder = new SqlConnectionStringBuilder(this.ConnectString);
+            this.DatabaseName = connectionStringBuilder.InitialCatalog;
+            this.conn = new SqlConnection();
+            this.reader = null;
+            this.isConnect = false;
+        }
+
+        public SqlAdapter(string connectstring)
+        {
+            this.ConnectString = connectstring;
             var connectionStringBuilder = new SqlConnectionStringBuilder(this.ConnectString);
             this.DatabaseName = connectionStringBuilder.InitialCatalog;
             this.conn = new SqlConnection();
@@ -37,15 +48,16 @@ namespace SEPFramework.Service
                 this.isConnect = true;
                 return true;
             }
-            catch (SqlException)
+            catch (SqlException e)
             {
                 this.isConnect = false;
                 return false;
             }
         }
 
-        public void CreateDatabaseIfNotExists()
+        public override void CreateDatabaseIfNotExists()
         {
+            this._closeReader();
             var connectionStringBuilder = new SqlConnectionStringBuilder(this.ConnectString);
             connectionStringBuilder.InitialCatalog = "master";
 
@@ -68,9 +80,9 @@ namespace SEPFramework.Service
             }
         }
 
-        public void CreateTableIfNotExists(Type typeClass)
+        public override void CreateTableIfNotExists(Type typeClass)
         {
-            DataTypeFactory dataFactory = new DataTypeFactory();
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
             string createQuery = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = N'" + typeClass.Name + "' AND XTYPE = 'U')" +
                 " CREATE TABLE " + typeClass.Name + " (";
 
@@ -96,17 +108,20 @@ namespace SEPFramework.Service
 
             createQuery += string.Join(", ", lstFieldQuery) + ")";
 
+            this._closeReader();
             using (SqlCommand command = new SqlCommand(createQuery, conn))
             {
                 command.ExecuteNonQuery();
             }
         }
 
-        public BaseModelListImp<T> FetchAllData<T>() where T : BaseModel, new()
+        public override BaseModelListImp<T> FetchAllData<T>()
         {
             BaseModelListImp<T> lstModel = new ArrayList<T>();
             String query = "SELECT * FROM " + typeof(T).Name;
-            SqlDataReader reader = new SqlCommand(query, this.conn).ExecuteReader();
+
+            this._closeReader();
+            reader = new SqlCommand(query, this.conn).ExecuteReader();
             while (reader.Read())
             {
                 T model = new T();
@@ -123,7 +138,9 @@ namespace SEPFramework.Service
         {
             T model = new T();
             String query = "SELECT * FROM " + Table.GetTableName(model.GetType()) + " WHERE ID = " + Id;
-            SqlDataReader reader = new SqlCommand(query, this.conn).ExecuteReader();
+
+            this._closeReader();
+            this.reader = new SqlCommand(query, this.conn).ExecuteReader();
             while (reader.Read())
             {
                 foreach (PropertyInfo prop in typeof(T).GetProperties())
@@ -135,9 +152,9 @@ namespace SEPFramework.Service
             return null;
         }
 
-        public void AddModel<T>(T model) where T : BaseModel, new()
+        public override void AddModel<T>(T model)
         {
-            DataTypeFactory dataFactory = new DataTypeFactory();
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
 
             String fields = "", values = "";
             foreach (PropertyInfo prop in model.GetType().GetProperties())
@@ -153,7 +170,69 @@ namespace SEPFramework.Service
             removeLastComma(ref fields);
             removeLastComma(ref values);
             String query = "INSERT INTO " + Table.GetTableName(model.GetType()) + "(" + fields + ") VALUES (" + values + ")";
+
+            this._closeReader();
             new SqlCommand(query, this.conn).ExecuteNonQuery();
+        }
+
+        public override bool Delete<T>(BaseModel model)
+        {
+            if (model == null) return false;
+
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
+            String condition = "";
+            foreach (PropertyInfo prop in model.GetType().GetProperties())
+            {
+                if (!Uniqued.check(prop))
+                {
+                    condition += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(model)) + " and ";
+                }
+            }
+
+            condition = condition.Remove(condition.Length - 4, 3);
+            string query = "DELETE FROM " + Table.GetTableName(model.GetType()) +
+                " WHERE " + condition;
+            this._closeReader();
+            new SqlCommand(query, this.conn).ExecuteNonQuery();
+
+            return true;
+        }
+
+        public override bool Update<T>(BaseModel old_model, BaseModel new_model)
+        {
+            if (old_model == null || new_model == null) return false;
+
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
+            String condition = "", set = "";
+
+            //Create condition
+            foreach (PropertyInfo prop in old_model.GetType().GetProperties())
+            {
+                if (!Uniqued.check(prop))
+                {
+                    condition += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(old_model)) + " and ";
+                }
+            }
+
+            //Create set
+            foreach (PropertyInfo prop in new_model.GetType().GetProperties())
+            {
+                if (!Uniqued.check(prop))
+                {
+                    set += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(new_model)) + ",";
+                }
+            }
+
+            this.removeLastComma(ref set);
+            condition = condition.Remove(condition.Length - 4, 3);
+            string query = "UPDATE " + Table.GetTableName(old_model.GetType()) +
+                " SET " + set + 
+                " WHERE " + condition;
+
+            this._closeReader();
+            new SqlCommand(query, this.conn).ExecuteNonQuery();
+
+            return true;
         }
 
         public void removeLastComma(ref string data)
@@ -171,51 +250,9 @@ namespace SEPFramework.Service
             this.isConnect = false;
         }
 
-        public override bool ReadAllFromTable(string table)
+        private void _closeReader()
         {
-            if (!this.IsConnect()) return false;
-
-            SqlCommand cmd = new SqlCommand("select * from " + table, this.conn);
-            this.reader = cmd.ExecuteReader();
-
-            return this.reader.HasRows;
-        }
-
-        public override List<object> Read()
-        {
-            List<object> result = new List<object>();
-
-            if (this.reader.Read())
-            {
-                for (int i = 0; i < this.reader.FieldCount; i++)
-                {
-                    result.Add(this.reader[i]);
-                }
-            }
-
-            return result;
-        }
-
-        public override List<string> GetColumnNames(string table)
-        {
-            if (!this.IsConnect()) this.Connect();
-
-            List<String> columnNames = new List<string>();
-            using (SqlCommand cmd = new SqlCommand("select column_name from information_schema.columns where table_name = '" + table + "'", this.conn))
-            using (SqlDataReader reader = cmd.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    var sch_table = reader.GetSchemaTable();
-                    foreach (DataColumn c in sch_table.Columns)
-                    {
-                        columnNames.Add(c.ColumnName);
-                    }
-                }
-            }
-
-            this.Close();
-            return columnNames;
+            if (this.reader != null && !this.reader.IsClosed) reader.Close();
         }
     }
 }

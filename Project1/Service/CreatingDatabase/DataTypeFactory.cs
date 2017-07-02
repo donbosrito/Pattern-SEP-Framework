@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace SEPFramework.Service
 {
-    class DataTypeFactory
+    abstract class DataTypeFactory
     {
         List<DataType.DataType> lstDataType;
 
@@ -19,32 +19,8 @@ namespace SEPFramework.Service
             lstDataType.Add(new SqlBoolean());
         }
 
-        public string GenerateCreatePropertyQuery(PropertyInfo prop)
-        {
-            foreach (var dataType in lstDataType)
-            {
-                var query = dataType.GenerateCreateQuery(prop);
+        public abstract string GenerateCreatePropertyQuery(PropertyInfo prop);
 
-                if (query != "")
-                {
-                    return query;
-                }
-            }
-            return "";
-        }
-
-        public string GetSqlValueString(PropertyInfo prop, object value)
-        {
-            foreach (var dataType in lstDataType)
-            {
-                var query = dataType.GenerateSQLValue(value);
-
-                if (query != "")
-                {
-                    return query;
-                }
-            }
-            return "";
-        }
+        public abstract string GetSqlValueString(PropertyInfo prop, object value);
     }
 }
