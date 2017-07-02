@@ -24,6 +24,7 @@ namespace SEPFramework
         public ModelForm(int ID)
         {
             InitializeComponent();
+            model = new T();
             generate();
             setPosition();
         }
@@ -31,6 +32,7 @@ namespace SEPFramework
         public ModelForm(MainForm<T> main_form)
         {
             InitializeComponent();
+            model = new T();
             generate();
             setPosition();
             _mainForm = main_form;
@@ -74,7 +76,7 @@ namespace SEPFramework
             return data;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             if (_mainForm == null) return;
 

@@ -150,20 +150,18 @@ namespace SEPFramework.Service
             }
 
 
-            removeLastComma(fields);
-            removeLastComma(values);
+            removeLastComma(ref fields);
+            removeLastComma(ref values);
             String query = "INSERT INTO " + Table.GetTableName(model.GetType()) + "(" + fields + ") VALUES (" + values + ")";
             new SqlCommand(query, this.conn).ExecuteNonQuery();
         }
 
-        public string removeLastComma(string data)
+        public void removeLastComma(ref string data)
         {
             if (data[data.Length - 1] == ',')
             {
-                data.Remove(data.Length - 1, 1);
-                return data;
+                data = data.Remove(data.Length - 1, 1);
             }
-            return data;
         }
 
         public override void Close()
