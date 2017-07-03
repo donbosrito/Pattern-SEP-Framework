@@ -9,5 +9,8 @@ namespace SEPFramework.Model
         public abstract void Udpate(int position, T t);
         public abstract void Delete(int ID);
         public abstract DataTable Display();
+        public abstract int Find(T model);
+        public abstract void Clear();
+        public abstract bool IsEmpty();
     }
 }

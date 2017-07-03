@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System;
 
 namespace SEPFramework.Model
 {
@@ -65,6 +66,33 @@ namespace SEPFramework.Model
             }
 
             return dataTable;
+        }
+
+        public override int Find(T model)
+        {
+            if (model == null) return -1;
+
+            for (int i = 0; i < this.data.Count; i++)
+            {
+                if (model.EqualTo(this.data[i])) return i;
+            }
+
+            return -1;
+        }
+
+        public override void Clear()
+        {
+            if (this.data != null)
+            {
+                this.data.Clear();
+            }
+        }
+
+        public override bool IsEmpty()
+        {
+            if (this.data == null || this.data.Count <= 0) return true;
+
+            return false; 
         }
     }
 }

@@ -36,6 +36,9 @@ namespace SEPFramework
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.gridTable)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -58,7 +61,7 @@ namespace SEPFramework
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1067, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1080, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -66,8 +69,11 @@ namespace SEPFramework
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
+            this.toolStripSeparator2,
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.logOutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -101,11 +107,28 @@ namespace SEPFramework
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // logOutToolStripMenuItem
+            // 
+            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.logOutToolStripMenuItem.Text = "Log out";
+            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 719);
+            this.ClientSize = new System.Drawing.Size(1080, 719);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gridTable);
             this.DoubleBuffered = true;
@@ -114,6 +137,7 @@ namespace SEPFramework
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.gridTable)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -132,6 +156,9 @@ namespace SEPFramework
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private ModelForm<T> modelForm;
+        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -63,6 +66,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputMethods\EnumComboBoxSelector.cs" />
+    <Compile Include="InputMethods\EnumRadioButtonSelector.cs" />
+    <Compile Include="SEPControl\IControl.cs" />
+    <Compile Include="SEPControl\MainFormAndMembership.cs" />
+    <Compile Include="SEPControl\MainFormOnly.cs" />
+    <Compile Include="MemberShip\AccountManager.cs" />
+    <Compile Include="MemberShip\AddingCoder.cs" />
     <Compile Include="Attribute\DisplayName.cs" />
     <Compile Include="Attribute\Identity.cs" />
     <Compile Include="Attribute\Key.cs" />
@@ -70,20 +80,24 @@
     <Compile Include="Attribute\StringLength.cs" />
     <Compile Include="Attribute\Table.cs" />
     <Compile Include="Attribute\Uniqued.cs" />
+    <Compile Include="MemberShip\Coder.cs" />
     <Compile Include="InputMethods\DateTimeSelector.cs" />
-    <Compile Include="InputMethods\EnumComboBoxSelector.cs" />
-    <Compile Include="InputMethods\EnumRadioButtonSelector.cs" />
     <Compile Include="InputMethods\InputMethod.cs" />
     <Compile Include="InputMethods\InputMethodFactory.cs" />
     <Compile Include="InputMethods\ListInputMethod.cs" />
     <Compile Include="InputMethods\NumberInput.cs" />
     <Compile Include="InputMethods\TextInput.cs" />
+    <Compile Include="MemberShip\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MemberShip\LoginForm.Designer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MemberShip\Account.cs" />
     <Compile Include="ModelForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,9 +114,15 @@
     <Compile Include="Service\CreatingDatabase\DataTypeFactory.cs" />
     <Compile Include="Service\CreatingDatabase\DataType\DataType.cs" />
     <Compile Include="Service\CreatingDatabase\DataType\SqlDataType.cs" />
+    <Compile Include="Service\CreatingDatabase\SqlDataTypeFactory.cs" />
     <Compile Include="Service\DBAdapter.cs" />
     <Compile Include="Service\SqlAdapter.cs" />
     <Compile Include="Attribute\ModelAttribute.cs" />
+    <Compile Include="MemberShip\SignupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MemberShip\SignupForm.Designer.cs" />
+    <EmbeddedResource Include="MemberShip\LoginForm.resx" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,6 +139,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="MemberShip\SignupForm.resx" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

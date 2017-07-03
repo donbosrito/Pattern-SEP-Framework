@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Reflection;
 using SEPFramework.Attribute;
 using SEPFramework.Model;
+using SEPFramework.Service.CreatingDatabase;
 
 namespace SEPFramework.Service
 {
@@ -13,14 +14,14 @@ namespace SEPFramework.Service
         private SqlConnection conn;
         private SqlDataReader reader;
 
-        public SqlAdapter()
+        public SqlAdapter(string connectstring)
         {
-            ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            var connectionStringBuilder = new SqlConnectionStringBuilder(ConnectString);
-            DatabaseName = connectionStringBuilder.InitialCatalog;
-            conn = new SqlConnection();
-            reader = null;
-            isConnect = false;
+            this.ConnectString = connectstring;
+            var connectionStringBuilder = new SqlConnectionStringBuilder(this.ConnectString);
+            this.DatabaseName = connectionStringBuilder.InitialCatalog;
+            this.conn = new SqlConnection();
+            this.reader = null;
+            this.isConnect = false;
         }
 
         public override bool Connect()
@@ -44,7 +45,7 @@ namespace SEPFramework.Service
             }
         }
 
-        public void CreateDatabaseIfNotExists()
+        public override void CreateDatabaseIfNotExists()
         {
             var connectionStringBuilder = new SqlConnectionStringBuilder(ConnectString);
             connectionStringBuilder.InitialCatalog = "master";
@@ -66,9 +67,9 @@ namespace SEPFramework.Service
             connection.Close();
         }
 
-        public void CreateTableIfNotExists(Type typeClass)
+        public override void CreateTableIfNotExists(Type typeClass)
         {
-            DataTypeFactory dataFactory = new DataTypeFactory();
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
             string createQuery = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = N'" + typeClass.Name + "' AND XTYPE = 'U')" +
                 " CREATE TABLE " + typeClass.Name + " (";
 
@@ -97,7 +98,7 @@ namespace SEPFramework.Service
             new SqlCommand(createQuery, conn).ExecuteNonQuery();
         }
 
-        public BaseModelListImp<T> FetchAllData<T>() where T : BaseModel, new()
+        public override BaseModelListImp<T> FetchAllData<T>()
         {
             BaseModelListImp<T> lstModel = new ArrayList<T>();
             String query = "SELECT * FROM " + typeof(T).Name;
@@ -133,9 +134,9 @@ namespace SEPFramework.Service
             return null;
         }
 
-        public void AddModel<T>(T model) where T : BaseModel, new()
+        public override void AddModel<T>(T model)
         {
-            DataTypeFactory dataFactory = new DataTypeFactory();
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
 
             String fields = "", values = "";
             foreach (PropertyInfo prop in model.GetType().GetProperties())
@@ -153,9 +154,9 @@ namespace SEPFramework.Service
             new SqlCommand(query, conn).ExecuteNonQuery();
         }
 
-        public void UpdateModel<T>(T oldModel, T newModel) where T : BaseModel, new()
+        public override void UpdateModel<T>(T oldModel, T newModel)
         {
-            DataTypeFactory dataFactory = new DataTypeFactory();
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
 
             String fieldsUpdate = "";
             String whereUpdate = "";
@@ -179,9 +180,9 @@ namespace SEPFramework.Service
             new SqlCommand(query, conn).ExecuteNonQuery();
         }
 
-        public void DeleteModel<T>(T model) where T : BaseModel, new()
+        public override void DeleteModel<T>(T model)
         {
-            DataTypeFactory dataFactory = new DataTypeFactory();
+            DataTypeFactory dataFactory = new SqlDataTypeFactory();
 
             string whereUpdate = "";
             foreach (PropertyInfo prop in typeof(T).GetProperties())
@@ -198,15 +199,7 @@ namespace SEPFramework.Service
             String query = "DELETE FROM " + Table.GetTableName(typeof(T)) + whereUpdate;
             new SqlCommand(query, conn).ExecuteNonQuery();
         }
-
-        public void removeLastComma(ref string data)
-        {
-            if (data[data.Length - 1] == ',')
-            {
-                data = data.Remove(data.Length - 1, 1);
-            }
-        }
-
+        
         public override void Close()
         {
             reader = null;
@@ -214,51 +207,12 @@ namespace SEPFramework.Service
             isConnect = false;
         }
 
-        public override bool ReadAllFromTable(string table)
+        public void removeLastComma(ref string data)
         {
-            if (!IsConnect()) return false;
-
-            SqlCommand cmd = new SqlCommand("select * from " + table, conn);
-            reader = cmd.ExecuteReader();
-
-            return reader.HasRows;
-        }
-
-        public override List<object> Read()
-        {
-            List<object> result = new List<object>();
-
-            if (reader.Read())
+            if (data[data.Length - 1] == ',')
             {
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    result.Add(reader[i]);
-                }
+                data = data.Remove(data.Length - 1, 1);
             }
-
-            return result;
-        }
-
-        public override List<string> GetColumnNames(string table)
-        {
-            if (!IsConnect()) Connect();
-
-            List<String> columnNames = new List<string>();
-            using (SqlCommand cmd = new SqlCommand("select column_name from information_schema.columns where table_name = '" + table + "'", conn))
-            using (SqlDataReader reader = cmd.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    var sch_table = reader.GetSchemaTable();
-                    foreach (DataColumn c in sch_table.Columns)
-                    {
-                        columnNames.Add(c.ColumnName);
-                    }
-                }
-            }
-
-            Close();
-            return columnNames;
         }
     }
 }

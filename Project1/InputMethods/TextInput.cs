@@ -47,6 +47,7 @@ namespace SEPFramework.InputMethods
 
         public override dynamic getData()
         {
+            if (_textBox.Text == "") return null;
             return this._textBox.Text;
         }
 

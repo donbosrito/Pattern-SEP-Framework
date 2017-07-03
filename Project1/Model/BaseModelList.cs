@@ -1,36 +1,54 @@
-﻿namespace SEPFramework.Model
+﻿using SEPFramework.Service;
+
+namespace SEPFramework.Model
 {
     public class BaseModelList<T> where T : BaseModel, new()
     {
-        BaseModelListImp<T> data;
+        private BaseModelListImp<T> data;
+        public DBAdapter DBConnector { private get; set; }
         public BaseModelList()
         {
-            DatabaseVariable.value.CreateTableIfNotExists(typeof(T));
+        }
+
+        public void Initilization()
+        {
+            this.DBConnector.CreateTableIfNotExists(typeof(T));
         }
 
         public BaseModelListImp<T> GetAll()
         {
-            return DatabaseVariable.value.FetchAllData<T>();
+            data = this.DBConnector.FetchAllData<T>();
+            return data;
         }
 
         public T GetById(int id)
         {
-            return DatabaseVariable.value.FetchDataById<T>(id);
+            return this.data.GetModel(id);
         }
 
         public void Add(T model)
         {
-            DatabaseVariable.value.AddModel<T>(model);
-        }
-
-        public void Update(T oldModel, T newModel)
-        {
-            DatabaseVariable.value.UpdateModel<T>(oldModel, newModel);
+            this.DBConnector.AddModel<T>(model);
         }
 
         public void Delete(T model)
         {
-            DatabaseVariable.value.DeleteModel<T>(model);
+            this.DBConnector.DeleteModel<T>(model);
+        }
+
+        public void Update(T oldModel, T newModel)
+        {
+            this.DBConnector.UpdateModel<T>(oldModel, newModel);
+        }
+
+        public int Find(T model)
+        {
+            return this.data.Find(model);
+        }
+
+        public bool IsEmpty()
+        {
+            return this.data.IsEmpty();
         }
     }
 }
