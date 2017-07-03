@@ -40,7 +40,7 @@ namespace SEPFramework
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (gridTable.SelectedRows != null)
+            if (gridTable.SelectedRows.Count > 0)
             {
                 T model = new T();
                 foreach (PropertyInfo prop in typeof(T).GetProperties())
@@ -50,12 +50,15 @@ namespace SEPFramework
                 }
                 modelForm = new ModelForm<T>(this, model);
                 modelForm.Show();
+            } else
+            {
+                MessageBox.Show("Please select any row in table!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (gridTable.SelectedRows != null)
+            if (gridTable.SelectedRows.Count > 0)
             {
                 T model = new T();
                 foreach (PropertyInfo prop in typeof(T).GetProperties())
@@ -63,6 +66,9 @@ namespace SEPFramework
                     prop.SetValue(model, Convert.ChangeType(gridTable.SelectedRows[0].Cells[prop.Name].Value, prop.PropertyType));
                 }
                 deleteModel(model);
+            } else
+            {
+                MessageBox.Show("Please select any row in table!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
