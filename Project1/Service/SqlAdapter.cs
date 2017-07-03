@@ -15,57 +15,55 @@ namespace SEPFramework.Service
 
         public SqlAdapter()
         {
-            this.ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            var connectionStringBuilder = new SqlConnectionStringBuilder(this.ConnectString);
-            this.DatabaseName = connectionStringBuilder.InitialCatalog;
-            this.conn = new SqlConnection();
-            this.reader = null;
-            this.isConnect = false;
+            ConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var connectionStringBuilder = new SqlConnectionStringBuilder(ConnectString);
+            DatabaseName = connectionStringBuilder.InitialCatalog;
+            conn = new SqlConnection();
+            reader = null;
+            isConnect = false;
         }
 
         public override bool Connect()
         {
-            if (this.ConnectString == null) return false;
+            if (ConnectString == null) return false;
 
-            this.conn.ConnectionString = this.ConnectString;
-            this.Close();
+            conn.ConnectionString = ConnectString;
+            Close();
 
             try
             {
                 CreateDatabaseIfNotExists();
-                this.conn.Open();
-                this.isConnect = true;
+                conn.Open();
+                isConnect = true;
                 return true;
             }
             catch (SqlException)
             {
-                this.isConnect = false;
+                isConnect = false;
                 return false;
             }
         }
 
         public void CreateDatabaseIfNotExists()
         {
-            var connectionStringBuilder = new SqlConnectionStringBuilder(this.ConnectString);
+            var connectionStringBuilder = new SqlConnectionStringBuilder(ConnectString);
             connectionStringBuilder.InitialCatalog = "master";
 
-            using (var connection = new SqlConnection(connectionStringBuilder.ToString()))
-            {
-                connection.Open();
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = string.Format("SELECT * FROM master.dbo.sysdatabases WHERE name='{0}'", DatabaseName);
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows) // exists
-                            return;
-                    }
+            var connection = new SqlConnection(connectionStringBuilder.ToString());
+            connection.Open();
 
-                    command.CommandText = string.Format("CREATE DATABASE {0}", this.DatabaseName);
-                    command.ExecuteNonQuery();
-                }
-                connection.Close();
-            }
+            var command = connection.CreateCommand();
+            command.CommandText = string.Format("SELECT * FROM master.dbo.sysdatabases WHERE name='{0}'", DatabaseName);
+
+            var reader = command.ExecuteReader();
+            if (reader.HasRows) // exists
+                return;
+
+            reader.Close();
+
+            command.CommandText = string.Format("CREATE DATABASE {0}", DatabaseName);
+            command.ExecuteNonQuery();
+            connection.Close();
         }
 
         public void CreateTableIfNotExists(Type typeClass)
@@ -96,17 +94,14 @@ namespace SEPFramework.Service
 
             createQuery += string.Join(", ", lstFieldQuery) + ")";
 
-            using (SqlCommand command = new SqlCommand(createQuery, conn))
-            {
-                command.ExecuteNonQuery();
-            }
+            new SqlCommand(createQuery, conn).ExecuteNonQuery();
         }
 
         public BaseModelListImp<T> FetchAllData<T>() where T : BaseModel, new()
         {
             BaseModelListImp<T> lstModel = new ArrayList<T>();
             String query = "SELECT * FROM " + typeof(T).Name;
-            SqlDataReader reader = new SqlCommand(query, this.conn).ExecuteReader();
+            SqlDataReader reader = new SqlCommand(query, conn).ExecuteReader();
             while (reader.Read())
             {
                 T model = new T();
@@ -116,6 +111,7 @@ namespace SEPFramework.Service
                 }
                 lstModel.Add(model);
             }
+            reader.Close();
             return lstModel;
         }
 
@@ -123,15 +119,17 @@ namespace SEPFramework.Service
         {
             T model = new T();
             String query = "SELECT * FROM " + Table.GetTableName(model.GetType()) + " WHERE ID = " + Id;
-            SqlDataReader reader = new SqlCommand(query, this.conn).ExecuteReader();
+            SqlDataReader reader = new SqlCommand(query, conn).ExecuteReader();
             while (reader.Read())
             {
                 foreach (PropertyInfo prop in typeof(T).GetProperties())
                 {
                     prop.SetValue(model, reader[prop.Name]);
                 }
+                reader.Close();
                 return model;
             }
+            reader.Close();
             return null;
         }
 
@@ -149,11 +147,56 @@ namespace SEPFramework.Service
                 }
             }
 
-
             removeLastComma(ref fields);
             removeLastComma(ref values);
-            String query = "INSERT INTO " + Table.GetTableName(model.GetType()) + "(" + fields + ") VALUES (" + values + ")";
-            new SqlCommand(query, this.conn).ExecuteNonQuery();
+            string query = "INSERT INTO " + Table.GetTableName(model.GetType()) + "(" + fields + ") VALUES (" + values + ")";
+            new SqlCommand(query, conn).ExecuteNonQuery();
+        }
+
+        public void UpdateModel<T>(T oldModel, T newModel) where T : BaseModel, new()
+        {
+            DataTypeFactory dataFactory = new DataTypeFactory();
+
+            String fieldsUpdate = "";
+            String whereUpdate = "";
+            foreach (PropertyInfo prop in typeof(T).GetProperties())
+            {
+                if (!Uniqued.check(prop))
+                {
+                    fieldsUpdate += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(newModel)) + ",";
+                }
+                if (Key.check(prop))
+                {
+                    if (whereUpdate == "")
+                        whereUpdate += " WHERE ";
+                    else whereUpdate += " AND ";
+                    whereUpdate += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(oldModel));
+                }
+            }
+
+            removeLastComma(ref fieldsUpdate);
+            String query = "UPDATE " + Table.GetTableName(typeof(T)) + " SET " + fieldsUpdate + whereUpdate;
+            new SqlCommand(query, conn).ExecuteNonQuery();
+        }
+
+        public void DeleteModel<T>(T model) where T : BaseModel, new()
+        {
+            DataTypeFactory dataFactory = new DataTypeFactory();
+
+            string whereUpdate = "";
+            foreach (PropertyInfo prop in typeof(T).GetProperties())
+            {
+                if (Key.check(prop))
+                {
+                    if (whereUpdate == "")
+                        whereUpdate += " WHERE ";
+                    else whereUpdate += " AND ";
+                    whereUpdate += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(model));
+                }
+            }
+
+            String query = "DELETE FROM " + Table.GetTableName(typeof(T)) + whereUpdate;
+            new SqlCommand(query, conn).ExecuteNonQuery();
         }
 
         public void removeLastComma(ref string data)
@@ -166,30 +209,30 @@ namespace SEPFramework.Service
 
         public override void Close()
         {
-            this.reader = null;
-            this.conn.Close();
-            this.isConnect = false;
+            reader = null;
+            conn.Close();
+            isConnect = false;
         }
 
         public override bool ReadAllFromTable(string table)
         {
-            if (!this.IsConnect()) return false;
+            if (!IsConnect()) return false;
 
-            SqlCommand cmd = new SqlCommand("select * from " + table, this.conn);
-            this.reader = cmd.ExecuteReader();
+            SqlCommand cmd = new SqlCommand("select * from " + table, conn);
+            reader = cmd.ExecuteReader();
 
-            return this.reader.HasRows;
+            return reader.HasRows;
         }
 
         public override List<object> Read()
         {
             List<object> result = new List<object>();
 
-            if (this.reader.Read())
+            if (reader.Read())
             {
-                for (int i = 0; i < this.reader.FieldCount; i++)
+                for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    result.Add(this.reader[i]);
+                    result.Add(reader[i]);
                 }
             }
 
@@ -198,10 +241,10 @@ namespace SEPFramework.Service
 
         public override List<string> GetColumnNames(string table)
         {
-            if (!this.IsConnect()) this.Connect();
+            if (!IsConnect()) Connect();
 
             List<String> columnNames = new List<string>();
-            using (SqlCommand cmd = new SqlCommand("select column_name from information_schema.columns where table_name = '" + table + "'", this.conn))
+            using (SqlCommand cmd = new SqlCommand("select column_name from information_schema.columns where table_name = '" + table + "'", conn))
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
                 if (reader.Read())
@@ -214,7 +257,7 @@ namespace SEPFramework.Service
                 }
             }
 
-            this.Close();
+            Close();
             return columnNames;
         }
     }

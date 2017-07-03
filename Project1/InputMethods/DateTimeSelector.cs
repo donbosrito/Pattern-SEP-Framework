@@ -51,6 +51,16 @@ namespace SEPFramework.InputMethods
             return this._dateTimePicker.Value;
         }
 
+        public override bool isEnabled()
+        {
+            return _dateTimePicker.Enabled;
+        }
+
+        public override void setEnable(bool isEnable)
+        {
+            _dateTimePicker.Enabled = isEnable;
+        }
+
         public override void setWidth(int width)
         {
             if (width <= 0) return;

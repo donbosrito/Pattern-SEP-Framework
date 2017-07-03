@@ -110,6 +110,16 @@ namespace SEPFramework.InputMethods
             return Convert.ChangeType(_numberBox.Value, _sampleType);
         }
 
+        public override bool isEnabled()
+        {
+            return _numberBox.Enabled;
+        }
+
+        public override void setEnable(bool isEnable)
+        {
+            _numberBox.Enabled = isEnable;
+        }
+
         public override void setWidth(int width)
         {
             if (width <= 0) return;

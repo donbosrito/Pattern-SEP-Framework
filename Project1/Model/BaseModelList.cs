@@ -22,5 +22,15 @@
         {
             DatabaseVariable.value.AddModel<T>(model);
         }
+
+        public void Update(T oldModel, T newModel)
+        {
+            DatabaseVariable.value.UpdateModel<T>(oldModel, newModel);
+        }
+
+        public void Delete(T model)
+        {
+            DatabaseVariable.value.DeleteModel<T>(model);
+        }
     }
 }

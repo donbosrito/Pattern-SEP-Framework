@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SEPFramework.Attributes;
+using System;
 using System.Reflection;
 
 namespace SEPFramework.Attribute
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class DisplayName : System.Attribute
+    public class DisplayName : ModelAttribute
     {
         public string Name { get; set; }
 

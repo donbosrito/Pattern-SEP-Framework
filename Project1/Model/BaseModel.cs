@@ -9,14 +9,19 @@ namespace SEPFramework.Model
 {
     public class BaseModel
     {
+        //[Identity]
+        //public int ID { get; }
+
         public int GetPropertiesCount()
         {
-            return this.GetType().GetProperties().Count();
+            return GetType().GetProperties().Count();
         }
 
         public PropertyInfo[] GetProperties()
         {
-            var t = this.GetType().GetProperties();
+            var t = GetType().GetProperties(BindingFlags.Public
+                                | BindingFlags.Instance
+                                | BindingFlags.DeclaredOnly);
             return t;
         }
 
@@ -26,7 +31,7 @@ namespace SEPFramework.Model
 
             if (objs.Count() == 0) return false;
 
-            PropertyInfo[] props = this.GetType().GetProperties();
+            PropertyInfo[] props = GetType().GetProperties();
             int count = props.Length;
 
             for (int i = 0; i < count; i++)
@@ -42,7 +47,7 @@ namespace SEPFramework.Model
             if (table == null) return;
 
             List<object> objs = new List<object>();
-            PropertyInfo[] props = this.GetType().GetProperties();
+            PropertyInfo[] props = GetType().GetProperties();
 
             for (int i = 0; i < props.Length; i++)
             {
@@ -59,10 +64,10 @@ namespace SEPFramework.Model
             var props = GetType().GetProperties();
             foreach (var prop in props)
             {
-                var displayName = ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName))).Name;
-                if (displayName != null || displayName != "")
+                var displayName = ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName)));
+                if (displayName != null && displayName.Name != "")
                 {
-                    names.Add(displayName);
+                    names.Add(displayName.Name);
                 }
                 else
                 {
@@ -73,11 +78,11 @@ namespace SEPFramework.Model
             return names;
         }
 
-        public bool ApplyPropeties(List<object> props_value)
+        public bool ApplyProperties(object[] props_value)
         {
-            var props = this.GetProperties();
+            var props = GetProperties();
 
-            if (props.Length != props_value.Count) return false;
+            if (props.Length != props_value.Length) return false;
 
             for (int i = 0; i < props.Length; i++)
             {
@@ -91,7 +96,7 @@ namespace SEPFramework.Model
         {
             List<object> values = new List<object>();
 
-            var props = this.GetProperties();
+            var props = GetProperties();
 
             foreach (var p in props)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SEPFramework.Model;
+using SEPFramework.Attribute;
 
 namespace SEPFramework.InputMethods
 {
@@ -57,6 +58,8 @@ namespace SEPFramework.InputMethods
                 {
                     var newInputMethod = (InputMethod)Activator.CreateInstance(temp.GetType());
                     newInputMethod.create(i.PropertyType);
+                    if (Identity.check(i))
+                        newInputMethod.setEnable(false);
                     list.add(newInputMethod);
                 }
             }

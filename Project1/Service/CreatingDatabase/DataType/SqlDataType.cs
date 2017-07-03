@@ -13,9 +13,9 @@ namespace SEPFramework.Service.DataType
                 var query = prop.Name + " INT";
 
                 //Check require attribute
-                if (Identify.check(prop))
+                if (Identity.check(prop))
                 {
-                    query += " IDENTIFY";
+                    query += " IDENTITY";
                 }
 
                 //Check require attribute
@@ -37,15 +37,13 @@ namespace SEPFramework.Service.DataType
 
         public override string GenerateSQLValue(object value)
         {
-            if (value.GetType() == typeof(Int32) || value.GetType() == typeof(Int32?))
+            if (value != null)
             {
-                if (value != null)
-                {
+                if (value.GetType() == typeof(Int32) || value.GetType() == typeof(Int32?))
                     return value.ToString();
-                }
-                else return "NULL";
+                return "";
             }
-            return "";
+            return "NULL";
         }
     }
 
@@ -56,7 +54,7 @@ namespace SEPFramework.Service.DataType
             if (prop.PropertyType == typeof(String))
             {                
                 //Check string length attribute
-                var query = prop.Name + " NVARCHAR(" + StringLength.getMaximumLength(prop) + ")";
+                var query = prop.Name + " NVARCHAR(" + StringLength.GetMaximumLength(prop) + ")";
 
                 //Check require attribute
                 if (Required.check(prop))
@@ -78,14 +76,12 @@ namespace SEPFramework.Service.DataType
 
         public override string GenerateSQLValue(object value)
         {
-            if (value.GetType() == typeof(String))
+            if (value != null)
             {
-                if (value != null)
-                {
+                if (value.GetType() == typeof(String))
                     return "N'" + value.ToString() + "'";
-                }
-                else return "NULL";
-            } return "";
+                return "";
+            } return "NULL";
         }
     }
 
@@ -117,15 +113,13 @@ namespace SEPFramework.Service.DataType
 
         public override string GenerateSQLValue(object value)
         {
-            if (value.GetType() == typeof(Double) || value.GetType() == typeof(float) || value.GetType() == typeof(Double?) || value.GetType() == typeof(float))
+            if (value != null)
             {
-                if (value != null)
-                {
+                if (value.GetType() == typeof(Double) || value.GetType() == typeof(float) || value.GetType() == typeof(Double?) || value.GetType() == typeof(float))
                     return value.ToString();
-                }
-                else return "NULL";
+                return "";
             }
-            return "";
+            return "NULL";
         }
     }
 
@@ -157,14 +151,12 @@ namespace SEPFramework.Service.DataType
 
         public override string GenerateSQLValue(object value)
         {
-            if (value.GetType() == typeof(Decimal) || value.GetType() == typeof(Decimal?))
+            if (value != null)
             {
-                if (value != null)
-                {
+                if (value.GetType() == typeof(Decimal) || value.GetType() == typeof(Decimal?))
                     return value.ToString();
-                }
-                else return "NULL";
-            } return "";
+                return "";
+            } return "NULL";
         }
     }
 
@@ -196,15 +188,13 @@ namespace SEPFramework.Service.DataType
 
         public override string GenerateSQLValue(object value)
         {
-            if (value.GetType() == typeof(DateTime) || value.GetType() == typeof(DateTime?))
+            if (value != null)
             {
-                if (value != null)
-                {
+                if (value.GetType() == typeof(DateTime) || value.GetType() == typeof(DateTime?))
                     return "'" + value.ToString() + "'";
-                }
-                else return "NULL";
+                return "";
             }
-            return "";
+            return "NULL";
         }
     }
 
@@ -236,16 +226,16 @@ namespace SEPFramework.Service.DataType
 
         public override string GenerateSQLValue(object value)
         {
-            if (value.GetType() == typeof(Boolean) || value.GetType() == typeof(Boolean?))
+            if (value != null)
             {
-                if (value != null)
+                if (value.GetType() == typeof(Boolean) || value.GetType() == typeof(Boolean?))
                 {
                     if (((bool)value) == true)
                         return "TRUE";
                     return "FALSE";
                 }
-                else return "NULL";
-            } return "";
+                return "";
+            } return "NULL";
         }
     }
 }

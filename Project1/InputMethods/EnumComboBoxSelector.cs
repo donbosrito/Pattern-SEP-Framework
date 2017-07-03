@@ -61,6 +61,16 @@ namespace SEPFramework.InputMethods
             return Convert.ChangeType(this._comboBox.SelectedValue, this._sampleType);
         }
 
+        public override bool isEnabled()
+        {
+            return _comboBox.Enabled;
+        }
+
+        public override void setEnable(bool isEnable)
+        {
+            _comboBox.Enabled = isEnable;
+        }
+
         public override void setWidth(int width)
         {
             if (width <= 0) return;

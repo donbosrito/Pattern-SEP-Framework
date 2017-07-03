@@ -1,5 +1,7 @@
 ﻿using SEPFramework.Model;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace SEPFramework
@@ -15,16 +17,6 @@ namespace SEPFramework
             gridTable.DataSource = data.GetAll().Display();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (gridTable.SelectedRows != null)
-            {
-                //data.Delete(gridTable.SelectedRows[0].Index);
-                MessageBox.Show("Successful!", "Deleting", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                gridTable.DataSource = data.GetAll().Display();
-            }
-        }
-
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
             modelForm = new ModelForm<T>(this);
@@ -35,9 +27,27 @@ namespace SEPFramework
         {
             if (gridTable.SelectedRows != null)
             {
-                //this.current = this.gridTable.SelectedRows[0].Index;
-                //this.modelForm.applyData(this.data.GetModel(this.current));
-                //this.modelForm.ShowDialog();
+                T model = new T();
+                foreach (PropertyInfo prop in typeof(T).GetProperties())
+                {
+                    Console.WriteLine(gridTable.SelectedRows[0].Cells[prop.Name].Value);
+                    prop.SetValue(model, Convert.ChangeType(gridTable.SelectedRows[0].Cells[prop.Name].Value, prop.PropertyType));
+                }
+                modelForm = new ModelForm<T>(this, model);
+                modelForm.Show();
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridTable.SelectedRows != null)
+            {
+                T model = new T();
+                foreach (PropertyInfo prop in typeof(T).GetProperties())
+                {
+                    prop.SetValue(model, Convert.ChangeType(gridTable.SelectedRows[0].Cells[prop.Name].Value, prop.PropertyType));
+                }
+                deleteModel(model);
             }
         }
 
@@ -46,6 +56,28 @@ namespace SEPFramework
             string message = "";
             data.Add(model);
             message = "Adding";
+
+            MessageBox.Show("Successful!", message, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            gridTable.DataSource = data.GetAll().Display();
+            gridTable.Update();
+        }
+
+        public void updateModel(T oldModel, T newModel)
+        {
+            string message = "";
+            data.Update(oldModel, newModel);
+            message = "Updating";
+
+            MessageBox.Show("Successful!", message, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            gridTable.DataSource = data.GetAll().Display();
+            gridTable.Update();
+        }
+
+        public void deleteModel(T model)
+        {
+            string message = "";
+            data.Delete(model);
+            message = "Updating";
 
             MessageBox.Show("Successful!", message, MessageBoxButtons.OK, MessageBoxIcon.Information);
             gridTable.DataSource = data.GetAll().Display();

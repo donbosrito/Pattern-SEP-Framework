@@ -92,6 +92,16 @@ namespace SEPFramework.InputMethods
             return Enum.Parse(this._sampleType, text);
         }
 
+        public override bool isEnabled()
+        {
+            return _groupRadioButton.Enabled;
+        }
+
+        public override void setEnable(bool isEnable)
+        {
+            _groupRadioButton.Enabled = isEnable;
+        }
+
         public override void setWidth(int width)
         {
             this._groupRadioButton.Width = width;

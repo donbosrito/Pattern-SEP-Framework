@@ -15,7 +15,13 @@ namespace SEPFramework.Attribute
             ErrorMessage = "This property must be a string with a maximum length of " + MaximumLength;
         }
 
-        public static int getMaximumLength(PropertyInfo prop)
+        public StringLength(int maxLength)
+        {
+            MaximumLength = maxLength;
+            ErrorMessage = "This property must be a string with a maximum length of " + MaximumLength;
+        }
+
+        public static int GetMaximumLength(PropertyInfo prop)
         {
             StringLength attr = (StringLength)prop.GetCustomAttribute(typeof(StringLength));
             if (attr == null)

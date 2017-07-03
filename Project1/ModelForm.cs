@@ -10,29 +10,36 @@ namespace SEPFramework
     {
         private MainForm<T> _mainForm = null;
         private T model;
+        private bool isUpdate;
 
         //Add Form
         public ModelForm()
         {
             InitializeComponent();
             model = new T();
+            isUpdate = false;
             generate();
             setPosition();
         }
 
         //Edit Form
-        public ModelForm(int ID)
+        public ModelForm(MainForm<T> main_form, T model)
         {
             InitializeComponent();
-            model = new T();
+            this.model = model;
+            isUpdate = true;
             generate();
             setPosition();
+            applyData(model);
+            _mainForm = main_form;
         }
 
+        //Add Form
         public ModelForm(MainForm<T> main_form)
         {
             InitializeComponent();
             model = new T();
+            isUpdate = false;
             generate();
             setPosition();
             _mainForm = main_form;
@@ -72,7 +79,7 @@ namespace SEPFramework
         public T getData()
         {
             var data = new T();
-            data.ApplyPropeties(controls.getData());
+            data.ApplyProperties(controls.getData().ToArray());
             return data;
         }
 
@@ -80,7 +87,13 @@ namespace SEPFramework
         {
             if (_mainForm == null) return;
 
-            _mainForm.createModel(getData());
+            if (!isUpdate)
+            {
+                _mainForm.createModel(getData());
+            } else
+            {
+                _mainForm.updateModel(model, getData());
+            }
         }
     }
 }

@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\DisplayName.cs" />
-    <Compile Include="Attribute\Identify.cs" />
+    <Compile Include="Attribute\Identity.cs" />
     <Compile Include="Attribute\Key.cs" />
     <Compile Include="Attribute\Required.cs" />
     <Compile Include="Attribute\StringLength.cs" />

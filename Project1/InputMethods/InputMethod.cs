@@ -19,6 +19,8 @@ namespace SEPFramework.InputMethods
         public abstract dynamic getData();
         public abstract InputMethod create(Type type);
         public abstract void setWidth(int width);
+        public abstract void setEnable(bool isEnable);
+        public abstract bool isEnabled();
 
         public InputMethod clone()
         {

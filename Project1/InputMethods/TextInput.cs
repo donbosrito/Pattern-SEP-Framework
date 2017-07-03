@@ -50,6 +50,16 @@ namespace SEPFramework.InputMethods
             return this._textBox.Text;
         }
 
+        public override bool isEnabled()
+        {
+            return _textBox.Enabled;
+        }
+
+        public override void setEnable(bool isEnable)
+        {
+            _textBox.Enabled = isEnable;
+        }
+
         public override void setWidth(int width)
         {
             if (width <= 0) return;

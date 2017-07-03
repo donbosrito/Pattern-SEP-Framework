@@ -5,19 +5,19 @@ using System.Reflection;
 namespace SEPFramework.Attribute
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class Identify : ModelAttribute
+    public class Identity : ModelAttribute
     {
-        public bool IsIdentify { get; set; }
+        public bool IsIdentity { get; set; }
 
-        public Identify()
+        public Identity()
         {
-            IsIdentify = true;
+            IsIdentity = true;
             ErrorMessage = "This property must be identified";
         }
 
         public static bool check(PropertyInfo prop)
         {
-            return prop.GetCustomAttribute(typeof(Identify)) != null && ((Identify)prop.GetCustomAttribute(typeof(Identify))).IsIdentify;
+            return prop.GetCustomAttribute(typeof(Identity)) != null && ((Identity)prop.GetCustomAttribute(typeof(Identity))).IsIdentity;
         }
     }
 }

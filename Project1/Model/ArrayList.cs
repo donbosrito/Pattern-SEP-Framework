@@ -48,10 +48,10 @@ namespace SEPFramework.Model
             //Add columns
             foreach (PropertyInfo prop in typeof(T).GetProperties())
             {
-                var displayName = ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName))).Name;
-                if (displayName != null || displayName != "")
+                var displayName = ((DisplayName)prop.GetCustomAttribute(typeof(DisplayName)));
+                if (displayName != null && displayName.Name != null && displayName.Name != "")
                 {
-                    dataTable.Columns.Add(displayName);
+                    dataTable.Columns.Add(displayName.Name);
                 } else
                 {
                     dataTable.Columns.Add(prop.Name);
