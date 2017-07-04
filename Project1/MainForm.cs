@@ -74,24 +74,34 @@ namespace SEPFramework
 
         public void createModel(T model)
         {
-            string message = "";
-            data.Add(model);
-            message = "Adding";
-
-            MessageBox.Show("Successful!", message, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            gridTable.DataSource = data.GetAll().Display();
-            gridTable.Update();
+            if (this.data.Find(model) >= 0)
+            {
+                MessageBox.Show(this.GetAlreadyExistMessage(), "Fail!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                data.Add(model);
+                MessageBox.Show("Adding Successful!", "Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                gridTable.DataSource = data.GetAll().Display();
+                gridTable.Update();
+                this.modelForm.Hide();
+            }
         }
 
         public void updateModel(T oldModel, T newModel)
         {
-            string message = "";
-            data.Update(oldModel, newModel);
-            message = "Updating";
-
-            MessageBox.Show("Successful!", message, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            gridTable.DataSource = data.GetAll().Display();
-            gridTable.Update();
+            if (this.data.Find(newModel) >= 0)
+            {
+                MessageBox.Show(this.GetAlreadyExistMessage(), "Fail!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                data.Update(oldModel, newModel);
+                MessageBox.Show("Updating Successful!", "Successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                gridTable.DataSource = data.GetAll().Display();
+                gridTable.Update();
+                this.modelForm.Hide();
+            }
         }
 
         public void deleteModel(T model)
@@ -136,6 +146,20 @@ namespace SEPFramework
             this.deleteToolStripMenuItem.Enabled = false;
             this.addToolStripMenuItem.Enabled = false;
             this.editToolStripMenuItem.Enabled = false;
+        }
+
+        private string GetAlreadyExistMessage()
+        {
+            T model = new T();
+            var keys = model.GetKeys();
+            string message = "";
+            foreach (var key in keys)
+            {
+                message = key.Name + ", ";
+            }
+
+            message = "Model has already exist. \nYou should check those information:" + message;
+            return message.Remove(message.Length - 2) + ". \nPlease input again!";
         }
     }
 }

@@ -9,7 +9,7 @@ using SEPFramework.Service.CreatingDatabase;
 
 namespace SEPFramework.Service
 {
-    public class SqlAdapter: DBAdapter
+    public class SqlAdapter : DBAdapter
     {
         private SqlConnection conn;
         private SqlDataReader reader;
@@ -87,7 +87,8 @@ namespace SEPFramework.Service
             if (lstKey.Count > 0)
             {
                 lstFieldQuery.Add("PRIMARY KEY (" + string.Join(", ", lstKey) + ")");
-            } else
+            }
+            else
             {
                 //Set default key
                 lstFieldQuery.Add("PRIMARY KEY (" + typeClass.GetProperties()[0].Name + ")");
@@ -166,13 +167,16 @@ namespace SEPFramework.Service
                 {
                     fieldsUpdate += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(newModel)) + ",";
                 }
-                if (Key.check(prop))
-                {
-                    if (whereUpdate == "")
-                        whereUpdate += " WHERE ";
-                    else whereUpdate += " AND ";
-                    whereUpdate += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(oldModel));
-                }
+
+            }
+
+            var keys = oldModel.GetKeys();
+            foreach (var key in keys)
+            {
+                if (whereUpdate == "")
+                    whereUpdate += " WHERE ";
+                else whereUpdate += " AND ";
+                whereUpdate += key.Name + " = " + dataFactory.GetSqlValueString(key, key.GetValue(oldModel));
             }
 
             removeLastComma(ref fieldsUpdate);
@@ -185,21 +189,19 @@ namespace SEPFramework.Service
             DataTypeFactory dataFactory = new SqlDataTypeFactory();
 
             string whereUpdate = "";
-            foreach (PropertyInfo prop in typeof(T).GetProperties())
+            var keys = model.GetKeys();
+            foreach (var key in keys)
             {
-                if (Key.check(prop))
-                {
-                    if (whereUpdate == "")
-                        whereUpdate += " WHERE ";
-                    else whereUpdate += " AND ";
-                    whereUpdate += prop.Name + " = " + dataFactory.GetSqlValueString(prop, prop.GetValue(model));
-                }
+                if (whereUpdate == "")
+                    whereUpdate += " WHERE ";
+                else whereUpdate += " AND ";
+                whereUpdate += key.Name + " = " + dataFactory.GetSqlValueString(key, key.GetValue(model));
             }
 
             String query = "DELETE FROM " + Table.GetTableName(typeof(T)) + whereUpdate;
             new SqlCommand(query, conn).ExecuteNonQuery();
         }
-        
+
         public override void Close()
         {
             reader = null;

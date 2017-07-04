@@ -39,9 +39,9 @@ namespace SEPFramework
             // panel_Main
             // 
             this.panel_Main.AutoScroll = true;
-            this.panel_Main.Location = new System.Drawing.Point(14, 43);
+            this.panel_Main.Location = new System.Drawing.Point(14, 28);
             this.panel_Main.Name = "panel_Main";
-            this.panel_Main.Size = new System.Drawing.Size(432, 417);
+            this.panel_Main.Size = new System.Drawing.Size(432, 446);
             this.panel_Main.TabIndex = 0;
             // 
             // btnCancel
@@ -70,9 +70,9 @@ namespace SEPFramework
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(154, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 31);
+            this.label1.Size = new System.Drawing.Size(131, 31);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Add Model";
+            this.label1.Text = "Edit Form";
             // 
             // ModelForm
             // 

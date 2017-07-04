@@ -15,7 +15,7 @@ namespace SEPFramework.Model
         public int Age { get; set; }
 
         [DisplayName("Gender")]
-        [StringLength(3)]
+        [StringLength(5)]
         public string Gender { get; set; } 
 
         public Example() { }

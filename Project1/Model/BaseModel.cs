@@ -84,7 +84,7 @@ namespace SEPFramework.Model
             return values;
         }
 
-        public bool EqualTo(BaseModel other)
+        public virtual bool EqualTo(BaseModel other)
         {
             var props = this.GetProperties();
 
@@ -103,9 +103,29 @@ namespace SEPFramework.Model
 
             if (count_nonKey == this.GetPropertiesCount())
             {
-                if (props[0].GetValue(this) != props[0].GetValue(other)) return false;
+                if (!props[0].GetValue(this).Equals(props[0].GetValue(other))) return false;
             }
             return true;
+        }
+
+        public List<PropertyInfo> GetKeys()
+        {
+            var keys = new List<PropertyInfo>();
+            var props = this.GetProperties();
+            for (int i = 0; i < this.GetPropertiesCount(); i++)
+            {
+                if (Key.check(props[i]))
+                {
+                    keys.Add(props[i]);
+                }
+            }
+
+            if (keys.Count == 0)
+            {
+                keys.Add(props[0]);
+            }
+
+            return keys;
         }
     }
 }
