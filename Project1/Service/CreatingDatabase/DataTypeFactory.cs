@@ -6,17 +6,10 @@ namespace SEPFramework.Service
 {
     abstract class DataTypeFactory
     {
-        List<DataType.DataType> lstDataType;
+        protected List<DataType.DataType> lstDataType;
 
         public DataTypeFactory()
         {
-            lstDataType = new List<DataType.DataType>();
-            lstDataType.Add(new SqlDecimal());
-            lstDataType.Add(new SqlString());
-            lstDataType.Add(new SqlDateTime());
-            lstDataType.Add(new SqlInt());
-            lstDataType.Add(new SqlDouble());
-            lstDataType.Add(new SqlBoolean());
         }
 
         public abstract string GenerateCreatePropertyQuery(PropertyInfo prop);

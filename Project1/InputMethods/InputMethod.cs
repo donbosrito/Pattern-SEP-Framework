@@ -33,17 +33,17 @@ namespace SEPFramework.InputMethods
             _attachOtherItemToForm(ref control);
         }
 
-        public void setLabelName(string name)
-        {
-            _label.Text = name;
-            _label.Update();
-        }
-
         public void setPosition(Point p)
         {
             _label.Location = p;
             Point bottom = new Point(p.X, p.Y + _label.Height);
             _setOtherItemPosition(bottom);
+        }
+
+        public void setLabelName(string name)
+        {
+            _label.Text = name;
+            _label.Update();
         }
     }
 }

@@ -10,8 +10,6 @@ namespace SEPFramework.Service.CreatingDatabase
 {
     class SqlDataTypeFactory : DataTypeFactory
     {
-        List<DataType.DataType> lstDataType;
-
         public SqlDataTypeFactory()
         {
             lstDataType = new List<DataType.DataType>();

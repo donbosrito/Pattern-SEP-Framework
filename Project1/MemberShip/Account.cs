@@ -20,7 +20,6 @@ namespace SEPFramework.MemberShip
         [Key]
         public string Username { get; set; }
 
-        [Key]
         public string Password {
             get
             {

@@ -89,7 +89,7 @@ namespace SEPFramework.MemberShip
             acc.Username = this.tb_UserName.Text;
             acc.Password = this.tb_Password.Text;
             acc = AccountManager.getInstance().IsExist(acc);
-            if (acc == null)
+            if (acc == null || acc.Password != this.tb_Password.Text)
             {
                 MessageBox.Show("Incorrect Username or Password!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

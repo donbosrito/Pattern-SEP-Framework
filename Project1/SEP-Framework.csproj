@@ -66,8 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InputMethods\EnumComboBoxSelector.cs" />
-    <Compile Include="InputMethods\EnumRadioButtonSelector.cs" />
     <Compile Include="SEPControl\IControl.cs" />
     <Compile Include="SEPControl\MainFormAndMembership.cs" />
     <Compile Include="SEPControl\MainFormOnly.cs" />
